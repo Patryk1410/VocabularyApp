@@ -1,16 +1,19 @@
 package vocabulary.view;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import vocabulary.data.DatabaseHandler;
 import vocabulary.model.Translation;
@@ -23,7 +26,9 @@ public class ViewTableController {
     @FXML
     private TableColumn<Translation,String> pWordColumn;
     @FXML
-    private TableColumn<Translation,String> fWordColumn; 
+    private TableColumn<Translation,String> fWordColumn;
+    @FXML
+    private Button removeBtn;
     
     @FXML
     private TextField pField;
@@ -36,6 +41,9 @@ public class ViewTableController {
     private ObservableList<Word> pWords;
     private ObservableList<Word> fWords;
     private ObservableList<Translation> translations;
+    private List<Word> newWords;
+    private List<Translation> newTranslations;
+    private List<Translation> removedTranslations;
     
     public ViewTableController() { }
     
@@ -53,6 +61,16 @@ public class ViewTableController {
             prop.set(word);
             return prop;
         });
+        wordsTable.getSelectionModel().selectedItemProperty().
+            addListener((observable, oldValue, newValue) -> updateWindow());
+    }
+    
+    private void updateWindow() {
+        if(wordsTable.getSelectionModel().getSelectedItem() != null) {
+            removeBtn.setDisable(false);
+        } else {
+            removeBtn.setDisable(true);
+        }
     }
     
     public void initData() {
@@ -60,6 +78,9 @@ public class ViewTableController {
             translations = DatabaseHandler.getTranslationsFromTable(tableName);
             pWords = DatabaseHandler.getWordsFromTable('P', tableName);
             fWords = DatabaseHandler.getWordsFromTable('F', tableName);
+            newWords = new ArrayList<Word>();
+            newTranslations = new ArrayList<Translation>();
+            removedTranslations = new ArrayList<Translation>();
             wordsTable.setItems(translations);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,7 +101,18 @@ public class ViewTableController {
     
     @FXML
     private void handleOk() {
+        saveChanges();
         stage.setScene(previousScene);
+    }
+    
+    @FXML
+    private void handleCancel() {
+        stage.setScene(previousScene);
+    }
+    
+    @FXML
+    private void handleApply() {
+        saveChanges();
     }
     
     @FXML
@@ -92,20 +124,38 @@ public class ViewTableController {
             Word pWord = createWord("P", tableName, pStr);
             if(!pWords.contains(pWord)) {
                 pWords.add(pWord);
+                if(!newWords.contains(pWord)) {
+                    newWords.add(pWord);
+                }
             }
             Word fWord = createWord("F", tableName, fStr);
             if(!fWords.contains(fWord)) {
                 fWords.add(fWord);
+                if(!newWords.contains(fWord)) {
+                    newWords.add(fWord);
+                }
             }
             Translation translation = new Translation(pWord.getId(), fWord.getId());
             if(!translations.contains(translation)) {
-                System.out.println("adding translatio");
+                //System.out.println("adding translatio");
                 translations.add(translation);
+                if(!newTranslations.contains(translation)) {
+                    newTranslations.add(translation);
+                }
+                removedTranslations.remove(translation);
             } 
         } else {
             //System.out.println("error");
             showCustomAlert("Wrong input", "Correct input you inserted into textfields");
         }
+    }
+    
+    @FXML
+    private void handleRemove() {
+        Translation translation = wordsTable.getSelectionModel().getSelectedItem();
+        translations.remove(translation);
+        newTranslations.remove(translation);
+        removedTranslations.add(translation);
     }
     
     private boolean checkTextFields() {
@@ -120,15 +170,6 @@ public class ViewTableController {
             return false;
         }
     }
-    
-//    private String getWord(int id) {
-//        try {
-//            return DatabaseHandler.getWord(id);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
     
     private String getWord(int id, char lang) {
         String res = null;
@@ -186,5 +227,21 @@ public class ViewTableController {
             }
         }
         return -1;
+    }
+    
+    private void saveChanges() {
+        try {
+            for(Word w : newWords) {
+                DatabaseHandler.insertWord(w);
+            }
+            for(Translation t : newTranslations) {
+                DatabaseHandler.insertTranslation(t);
+            }
+            for(Translation t : removedTranslations) {
+                DatabaseHandler.deleteTranslation(t);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

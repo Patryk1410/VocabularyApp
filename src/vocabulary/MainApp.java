@@ -25,6 +25,9 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Vocabulary Test");
+        this.primaryStage.setOnCloseRequest(event -> {
+            DatabaseHandler.clearDatabase();
+        });
         
         showMainWindow();
     }
@@ -37,6 +40,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(mainWindow);
             MainWindowController controller = loader.getController();
             controller.setMainApp(this);
+            controller.setStage(primaryStage);
             primaryStage.resizableProperty().setValue(false);
             primaryStage.setScene(scene);
             primaryStage.show();

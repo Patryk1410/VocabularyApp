@@ -86,6 +86,14 @@ public class DatabaseHandler {
         return res;
     }
     
+    public static void deleteTranslationsFromTable(String tableName) throws SQLException {
+        Statement s = connection.createStatement();
+        String subQuery = "(select id from wordbank where source = '" + tableName + "')";
+        String query = "delete from translations where id1 in "
+                + subQuery + " or id2 in " + subQuery;
+        s.execute(query);
+    }
+    
     public static String getWord(int id) throws SQLException {
         Statement s = connection.createStatement();
         String query = "select word from wordbank where id = " + id;
@@ -114,5 +122,45 @@ public class DatabaseHandler {
             return -1;
         }
         return rs.getInt(1);
+    }
+    
+    public static void insertWord(Word w) throws SQLException {
+        String query = "insert into wordbank values(?, ?, ?, ?)";
+        String lang = "" + w.getLanguage();
+        PreparedStatement s = connection.prepareStatement(query);
+        s.setInt(1, w.getId());
+        s.setString(2, lang);
+        s.setString(3, w.getWord());
+        s.setString(4, w.getSource());
+        s.executeUpdate();
+    }
+    
+    public static void insertTranslation(Translation t) throws SQLException {
+        String query = "insert into translations values(?,?)";
+        PreparedStatement s = connection.prepareStatement(query);
+        s.setInt(1, t.getPid());
+        s.setInt(2, t.getFid());
+        s.executeUpdate();
+    }
+    
+    public static void deleteTranslation(Translation t) throws SQLException {
+        String query = "delete from translations where id1 = ? and id2 = ?";
+        PreparedStatement s = connection.prepareStatement(query);
+        s.setInt(1, t.getPid());
+        s.setInt(2, t.getFid());
+        s.executeUpdate();
+    }
+    
+    public static void clearDatabase() {
+        try {
+            Statement s = connection.createStatement();
+            String query = 
+                    "delete from wordbank where id not in "
+                    + "(select id1 from translations) and id not in "
+                    + "(select id2 from translations)";
+            s.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
