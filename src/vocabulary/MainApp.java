@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import vocabulary.data.DatabaseHandler;
 import vocabulary.util.CustomString;
+import vocabulary.view.AskQuestionController;
 import vocabulary.view.MainWindowController;
 import vocabulary.view.TableCreationDialogController;
 import vocabulary.view.ViewTableController;
@@ -96,6 +97,29 @@ public class MainApp extends Application {
             controller.setTableName(tableName);
             controller.initData();
             primaryStage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void startTest(boolean allTables, boolean allWords, boolean toPolish, String tableName) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/AskQuestion.fxml"));
+        try {
+            AnchorPane page = (AnchorPane) loader.load();
+            Stage stage = new Stage();
+            stage.resizableProperty().setValue(false);
+            stage.setTitle("Test");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(primaryStage);
+            
+            Scene scene = new Scene(page);
+            stage.setScene(scene);
+            
+            AskQuestionController controller = loader.getController();
+            controller.init(allTables, allWords, toPolish, tableName);
+            
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }

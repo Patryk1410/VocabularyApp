@@ -7,8 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import org.apache.derby.client.am.SqlException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,6 +68,21 @@ public class DatabaseHandler {
         return res;
     }
     
+    public static List<Word> getWordListFromTable(char language, String tableName) throws SQLException {
+        List<Word> res = new ArrayList<Word>();
+        Statement s = connection.createStatement();
+        String query = "select * from wordbank where lang = '" + language + "' and source = '" + tableName + "'";
+        ResultSet rs = s.executeQuery(query);
+        while(rs.next()) {
+            int id = rs.getInt(1);
+            String lang = rs.getString(2);
+            String word = rs.getString(3);
+            String source = rs.getString(4);
+            res.add(new Word(id, lang, word, source));
+        }
+        return res;
+    }
+    
     public static ObservableList<Translation> getTranslationsFromTable(String tableName) throws SQLException {
         ObservableList<Translation> res = FXCollections.observableArrayList();
         Statement s = connection.createStatement();
@@ -76,13 +91,25 @@ public class DatabaseHandler {
                 + subQuery + " or id2 in " + subQuery;
         ResultSet rs = s.executeQuery(query);
         while(rs.next()) {
-//            System.out.println("iterating");
             int id1 = rs.getInt(1);
             int id2 = rs.getInt(2);
             res.add(new Translation(id1, id2));
         }
-//        System.out.println(tableName);
-//        System.out.println(res.size());
+        return res;
+    }
+    
+    public static List<Translation> getTranslationListFromTable(String tableName) throws SQLException {
+        List<Translation> res = new ArrayList<Translation>();
+        Statement s = connection.createStatement();
+        String subQuery = "(select id from wordbank where source = '" + tableName + "')";
+        String query = "select * from translations where id1 in "
+                + subQuery + " or id2 in " + subQuery;
+        ResultSet rs = s.executeQuery(query);
+        while(rs.next()) {
+            int id1 = rs.getInt(1);
+            int id2 = rs.getInt(2);
+            res.add(new Translation(id1, id2));
+        }
         return res;
     }
     
@@ -149,6 +176,36 @@ public class DatabaseHandler {
         s.setInt(1, t.getPid());
         s.setInt(2, t.getFid());
         s.executeUpdate();
+    }
+    
+    public static List<String> getWordTranslations(Word w, char lang) throws SQLException {
+        List<String> res = new ArrayList<>();
+        Statement s = connection.createStatement();
+        String chosenLanguage = lang == 'P' ? "id1" : "id2";
+        String serchedLanguage = lang == 'P' ? "id2" : "id1";
+        String query = "select word from wordbank where id in "
+                + "(select " + serchedLanguage + " from translations where " + chosenLanguage + " = "
+                + w.getId() + ")";
+        ResultSet rs = s.executeQuery(query);
+        while (rs.next()) {
+            res.add(rs.getString(1));
+        }
+        return res;
+    }
+    
+    public static List<Word> getWordList(char language) throws SQLException {
+        List<Word> res = new ArrayList<Word>();
+        Statement s = connection.createStatement();
+        String query = "select * from wordbank where lang = '" + language + "'";
+        ResultSet rs = s.executeQuery(query);
+        while(rs.next()) {
+            int id = rs.getInt(1);
+            String lang = rs.getString(2);
+            String word = rs.getString(3);
+            String source = rs.getString(4);
+            res.add(new Word(id, lang, word, source));
+        }
+        return res;
     }
     
     public static void clearDatabase() {
