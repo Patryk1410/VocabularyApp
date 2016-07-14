@@ -7,8 +7,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import vocabulary.data.DatabaseHandler;
 import vocabulary.model.Word;
 
@@ -20,6 +24,8 @@ public class AskQuestionController {
     private Label question;
     @FXML
     private TextField answer;
+    
+    private Stage stage;
 
     private boolean allTables;
     private boolean allWords;
@@ -52,6 +58,15 @@ public class AskQuestionController {
         askQuestion();
     }
     
+    public void setStage(Stage stage) {
+        this.stage = stage;
+        stage.setOnCloseRequest(event -> {
+            if(!showConfirmCloseAlert()) {
+                event.consume();
+            }
+        });
+    }
+    
     public void getQuestions() {
         try {
             List<Word> pWords = null;
@@ -77,12 +92,78 @@ public class AskQuestionController {
     
     @FXML
     private void handleCheck() {
-        
+        String ans = answer.getText();
+        if (checkAnswer(ans)) {
+            showCorrectAnswerAlert();
+            score++;
+        } else {
+            String q = questionList.get(questionNumber - 1);
+            showWrongAnswerAlert(q);
+        }
+        if(questionNumber == numberOfQuestions) {
+            showTestFinishedAlert();
+            stage.close();
+        } else {
+            questionNumber++;
+            askQuestion();
+        }
+    }
+    
+    private boolean checkAnswer(String ans) {
+        String q = questionList.get(questionNumber - 1);
+        ans = ans.trim().toLowerCase();
+        return questions.get(q).contains(ans);
+    }
+    
+    private void showCorrectAnswerAlert() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.initOwner(stage);
+        alert.setTitle("Correct Answer");
+        alert.setHeaderText("Correct Answer!");
+        alert.setContentText("Your answer is correct");
+        alert.showAndWait();
+    }
+    
+    private void showWrongAnswerAlert(String q) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.initOwner(stage);
+        alert.setTitle("Wrong Answer");
+        alert.setHeaderText("Wrong Answer!");
+        String correctAnswer = "";
+        List<String> answers = questions.get(q);
+        for(String s : answers) {
+            correctAnswer += (s + ", ");
+        }
+        correctAnswer = correctAnswer.substring(0, correctAnswer.length()-2);
+        alert.setContentText("Correct answer is: \n" + correctAnswer);
+        alert.showAndWait();
+    }
+    
+    private boolean showConfirmCloseAlert() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initOwner(stage);
+        alert.setTitle("Exit test");
+        alert.setHeaderText("Are you sure you want to exit the test?");
+        alert.setContentText("All your progress will be lost.");
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
+    }
+    
+    private void showTestFinishedAlert() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.initOwner(stage);
+        alert.setTitle("Test finished");
+        alert.setHeaderText("The test is finished");
+        int percent = score * 100 / numberOfQuestions;
+        alert.setContentText("Your score is " + score + "/" + numberOfQuestions + " (" + percent + "%)");
+        alert.showAndWait();
     }
     
     private void askQuestion() {
+        answer.clear();
+        answer.requestFocus();
         counter.setText(questionNumber + "/" + numberOfQuestions);
-        String q = questionList.get(questionNumber-1);
+        String q = questionList.get(questionNumber - 1);
         question.setText(q);
     }
 }

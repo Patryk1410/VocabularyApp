@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import vocabulary.data.DatabaseHandler;
 import vocabulary.util.CustomString;
 import vocabulary.view.AskQuestionController;
@@ -29,6 +29,7 @@ public class MainApp extends Application {
         this.primaryStage.setOnCloseRequest(event -> {
             DatabaseHandler.clearDatabase();
         });
+        this.primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
         showMainWindow();
     }
     
@@ -69,6 +70,7 @@ public class MainApp extends Application {
             dialogStage.setTitle("New Table");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
+            dialogStage.getIcons().add(new Image("file:resources/images/icon.png"));
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             
@@ -111,12 +113,14 @@ public class MainApp extends Application {
             stage.setTitle("Test");
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(primaryStage);
+            stage.getIcons().add(new Image("file:resources/images/icon.png"));
             
             Scene scene = new Scene(page);
             stage.setScene(scene);
             
             AskQuestionController controller = loader.getController();
             controller.init(allTables, allWords, toPolish, tableName, numberOfWords);
+            controller.setStage(stage);
             
             stage.showAndWait();
         } catch (IOException e) {
