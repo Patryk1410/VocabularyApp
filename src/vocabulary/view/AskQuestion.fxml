@@ -7,21 +7,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="200.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60" fx:controller="vocabulary.view.AskQuestionController">
+<AnchorPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vocabulary.view.AskQuestionController">
    <children>
-      <Label layoutX="14.0" layoutY="14.0" text="Label">
+      <Label fx:id="counter" layoutX="14.0" layoutY="14.0" text="Label">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="73.0" text="Label">
+      <Label fx:id="question" layoutX="14.0" layoutY="73.0" text="Label">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField layoutX="14.0" layoutY="100.0" />
-      <Button layoutX="14.0" layoutY="161.0" mnemonicParsing="false" text="Next" />
+      <TextField fx:id="answer" layoutX="14.0" layoutY="100.0" />
+      <Button layoutX="14.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleCheck" text="Check" />
       <Separator layoutY="54.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
    </children>
 </AnchorPane>

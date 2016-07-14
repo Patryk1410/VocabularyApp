@@ -6,11 +6,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import vocabulary.data.DatabaseHandler;
-import vocabulary.model.Translation;
 import vocabulary.model.Word;
 
 public class AskQuestionController {
+    
+    @FXML
+    private Label counter;
+    @FXML
+    private Label question;
+    @FXML
+    private TextField answer;
 
     private boolean allTables;
     private boolean allWords;
@@ -19,6 +28,7 @@ public class AskQuestionController {
     private int numberOfQuestions;
     private int score;
     private Map<String,List<String>> questions;
+    private List<String> questionList;
     
     private String tableName;
     
@@ -30,6 +40,7 @@ public class AskQuestionController {
         this.toPolish = toPolish;
         this.tableName = tableName;
         questions = new TreeMap<String,List<String>>();
+        questionList = new ArrayList<String>();
         questionNumber = 1;
         score = 0;
         getQuestions();
@@ -38,6 +49,7 @@ public class AskQuestionController {
         } else {
             this.numberOfQuestions = numberOfQuestions;
         }
+        askQuestion();
     }
     
     public void getQuestions() {
@@ -56,9 +68,21 @@ public class AskQuestionController {
             for(Word w : current) {
                 List<String> wordTranslations = DatabaseHandler.getWordTranslations(w, lang);
                 questions.put(w.getWord(), wordTranslations);
+                questionList.add(w.getWord());
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    @FXML
+    private void handleCheck() {
+        
+    }
+    
+    private void askQuestion() {
+        counter.setText(questionNumber + "/" + numberOfQuestions);
+        String q = questionList.get(questionNumber-1);
+        question.setText(q);
     }
 }

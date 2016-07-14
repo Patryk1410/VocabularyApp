@@ -29,7 +29,6 @@ public class MainApp extends Application {
         this.primaryStage.setOnCloseRequest(event -> {
             DatabaseHandler.clearDatabase();
         });
-        
         showMainWindow();
     }
     

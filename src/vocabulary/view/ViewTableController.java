@@ -143,7 +143,10 @@ public class ViewTableController {
                     newTranslations.add(translation);
                 }
                 removedTranslations.remove(translation);
-            } 
+            }
+            pField.clear();
+            fField.clear();
+            pField.requestFocus();
         } else {
             //System.out.println("error");
             showCustomAlert("Wrong input", "Correct input you inserted into textfields");
@@ -163,7 +166,7 @@ public class ViewTableController {
         if (pStr == null || pStr.isEmpty() || fStr == null || fStr.isEmpty()) {
             return false;
         }
-        String regex = "[a-zéèçàôûöüîïêâëäęóąśźćńł\\s]+";
+        String regex = "[a-zéèçàôûöüîïêâëäęóąśżźćńł?'\\s]+";
         if(pStr.matches(regex) && fStr.matches(regex)) {
             return true;
         } else {
@@ -185,7 +188,7 @@ public class ViewTableController {
     private void showCustomAlert(String header, String message) {
         Alert alert = new Alert(AlertType.WARNING);
         alert.initOwner(stage);
-        alert.setTitle("Błąd");
+        alert.setTitle("Error");
         alert.setHeaderText(header);
         alert.setContentText(message);
         alert.showAndWait();

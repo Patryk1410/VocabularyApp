@@ -114,7 +114,7 @@ public class MainWindowController {
         boolean allWords = allWordsRdbtn.isSelected();
         boolean toPolish = toPolishRdbtn.isSelected();
         String tableName = allTables ? null : chooseTable.getSelectionModel().getSelectedItem();
-        if ((!allTables && tableName != null) && (!allWords && !numberOfWordsField.getText().isEmpty()) && checkIfNumberValid()) { 
+        if ((allTables || tableName != null) && (allWords || (!numberOfWordsField.getText().isEmpty() && checkIfNumberValid()))) { 
             int numberOfWords = allWords ? 0 : Integer.parseInt(numberOfWordsField.getText());
             mainApp.startTest(allTables, allWords, toPolish, tableName, numberOfWords);
         } else {
