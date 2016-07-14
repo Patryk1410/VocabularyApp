@@ -9,6 +9,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import vocabulary.MainApp;
@@ -25,6 +26,12 @@ public class MainWindowController {
     private Button removeTable;
     @FXML
     private TextField numberOfWordsField;
+    @FXML
+    private RadioButton allTablesRdbtn;
+    @FXML
+    private RadioButton allWordsRdbtn;
+    @FXML
+    private RadioButton toPolishRdbtn;
     
     private MainApp mainApp;
     private ObservableList<String> tables;
@@ -103,7 +110,19 @@ public class MainWindowController {
     
     @FXML
     private void handleStart() {
-        
+        boolean allTables = allTablesRdbtn.isSelected();
+        boolean allWords = allWordsRdbtn.isSelected();
+        boolean toPolish = toPolishRdbtn.isSelected();
+        String tableName = allTables ? null : chooseTable.getSelectionModel().getSelectedItem();
+        if ((!allTables && tableName != null) && (!allWords && !numberOfWordsField.getText().isEmpty()) && checkIfNumberValid()) { 
+            int numberOfWords = allWords ? 0 : Integer.parseInt(numberOfWordsField.getText());
+            mainApp.startTest(allTables, allWords, toPolish, tableName, numberOfWords);
+        } else {
+            boolean b1 = !allTables && tableName == null;
+            boolean b2 = !allWords && numberOfWordsField.getText().isEmpty();
+            boolean b3 = !allWords && !numberOfWordsField.getText().isEmpty() && !checkIfNumberValid();
+            showWarningAlert(b1, b2, b3);
+        }
     }
     
     private boolean showConfiramtionAlert(String tableName) {
@@ -111,9 +130,30 @@ public class MainWindowController {
         alert.initOwner(stage);
         alert.setTitle("Remove table");
         alert.setHeaderText("Are you sure you want to remove table " + tableName + "?");
-        alert.setContentText("This will remove the table and all of its content. Once it is done"
+        alert.setContentText("This will remove the table and its entire content. Once it is done"
                 + " it can't be reverted.");
         alert.showAndWait();
         return alert.getResult() == ButtonType.OK;
+    }
+    
+    private void showWarningAlert(boolean chooseTable, boolean enterNumber, boolean invalidNumber) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.initOwner(stage);
+        alert.setTitle("Starting error");
+        alert.setHeaderText("Cannot start test for the following reasons:");
+        String s1 = chooseTable ? "-You did not choose a table\n" : "";
+        String s2 = enterNumber ? "-You did not enter a number of words\n" : "";
+        String s3 = invalidNumber ? "-You did not enter a valid number of words" : "";
+        alert.setContentText(s1 + s2 + s3);
+        alert.showAndWait();
+    }
+    
+    private boolean checkIfNumberValid() {
+        try {
+            Integer.parseInt(numberOfWordsField.getText());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

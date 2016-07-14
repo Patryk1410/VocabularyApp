@@ -102,7 +102,7 @@ public class MainApp extends Application {
         }
     }
     
-    public void startTest(boolean allTables, boolean allWords, boolean toPolish, String tableName) {
+    public void startTest(boolean allTables, boolean allWords, boolean toPolish, String tableName, int numberOfWords) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource("view/AskQuestion.fxml"));
         try {
@@ -117,7 +117,7 @@ public class MainApp extends Application {
             stage.setScene(scene);
             
             AskQuestionController controller = loader.getController();
-            controller.init(allTables, allWords, toPolish, tableName);
+            controller.init(allTables, allWords, toPolish, tableName, numberOfWords);
             
             stage.showAndWait();
         } catch (IOException e) {

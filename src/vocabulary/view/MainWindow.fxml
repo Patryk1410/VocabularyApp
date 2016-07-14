@@ -47,9 +47,9 @@
                                     <ToggleGroup fx:id="radioGroup1" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton layoutX="14.0" layoutY="85.0" mnemonicParsing="false" text="Select words from all tables" toggleGroup="$radioGroup1" />
+                              <RadioButton fx:id="allTablesRdbtn" layoutX="14.0" layoutY="85.0" mnemonicParsing="false" text="Select words from all tables" toggleGroup="$radioGroup1" />
                               <Separator layoutY="118.0" prefHeight="3.0" prefWidth="417.0" />
-                              <RadioButton layoutX="14.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleAllWords" selected="true" text="Select all words">
+                              <RadioButton fx:id="allWordsRdbtn" layoutX="14.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleAllWords" selected="true" text="Select all words">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="radioGroup2" />
                                  </toggleGroup>
@@ -57,7 +57,7 @@
                               <RadioButton layoutX="14.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleNumberOfWords" text="Select number of words" toggleGroup="$radioGroup2" />
                               <TextField fx:id="numberOfWordsField" disable="true" layoutX="176.0" layoutY="160.0" prefHeight="25.0" prefWidth="35.0" />
                               <Separator layoutY="197.0" prefHeight="3.0" prefWidth="417.0" />
-                              <RadioButton layoutX="14.0" layoutY="218.0" mnemonicParsing="false" selected="true" text="Translate to polish">
+                              <RadioButton fx:id="toPolishRdbtn" layoutX="14.0" layoutY="218.0" mnemonicParsing="false" selected="true" text="Translate to polish">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="radioGroup3" />
                                  </toggleGroup>
@@ -67,7 +67,7 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <Button defaultButton="true" layoutX="135.0" layoutY="12.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="415.0" text="Start!" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Button defaultButton="true" layoutX="135.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleStart" prefHeight="49.0" prefWidth="415.0" text="Start!" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>
