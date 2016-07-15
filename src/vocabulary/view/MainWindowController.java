@@ -90,8 +90,8 @@ public class MainWindowController {
             String tableName = chooseTable.getSelectionModel().getSelectedItem();
             if(showConfiramtionAlert(tableName)) {
                 DatabaseHandler.deleteTranslationsFromTable(tableName);
+                tables.remove(tableName);
             }
-            tables.remove(tableName);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -150,8 +150,8 @@ public class MainWindowController {
     
     private boolean checkIfNumberValid() {
         try {
-            Integer.parseInt(numberOfWordsField.getText());
-            return true;
+            int n = Integer.parseInt(numberOfWordsField.getText());
+            return n > 0;
         } catch (NumberFormatException e) {
             return false;
         }

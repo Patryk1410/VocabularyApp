@@ -4,12 +4,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -32,9 +33,11 @@ public class AskQuestionController {
     private boolean toPolish;
     private int questionNumber;
     private int numberOfQuestions;
+    private int questionId;
     private int score;
     private Map<String,List<String>> questions;
     private List<String> questionList;
+    private Random randomGenerator;
     
     private String tableName;
     
@@ -49,12 +52,10 @@ public class AskQuestionController {
         questionList = new ArrayList<String>();
         questionNumber = 1;
         score = 0;
+        randomGenerator = new Random();
         getQuestions();
-        if(allWords) {
-            this.numberOfQuestions = questions.size();
-        } else {
-            this.numberOfQuestions = numberOfQuestions;
-        }
+        this.numberOfQuestions = allWords ? questions.size() : numberOfQuestions;
+        this.questionId = allWords ? questionNumber - 1 : randomGenerator.nextInt(questionList.size());
         askQuestion();
     }
     
@@ -97,7 +98,7 @@ public class AskQuestionController {
             showCorrectAnswerAlert();
             score++;
         } else {
-            String q = questionList.get(questionNumber - 1);
+            String q = questionList.get(questionId);
             showWrongAnswerAlert(q);
         }
         if(questionNumber == numberOfQuestions) {
@@ -105,12 +106,13 @@ public class AskQuestionController {
             stage.close();
         } else {
             questionNumber++;
+            questionId = allWords ? questionNumber - 1 : randomGenerator.nextInt(questionList.size());
             askQuestion();
         }
     }
     
     private boolean checkAnswer(String ans) {
-        String q = questionList.get(questionNumber - 1);
+        String q = questionList.get(questionId);
         ans = ans.trim().toLowerCase();
         return questions.get(q).contains(ans);
     }
@@ -163,7 +165,7 @@ public class AskQuestionController {
         answer.clear();
         answer.requestFocus();
         counter.setText(questionNumber + "/" + numberOfQuestions);
-        String q = questionList.get(questionNumber - 1);
+        String q = questionList.get(questionId);
         question.setText(q);
     }
 }

@@ -44,6 +44,7 @@ public class ViewTableController {
     private List<Word> newWords;
     private List<Translation> newTranslations;
     private List<Translation> removedTranslations;
+    private int idFromDb;
     
     public ViewTableController() { }
     
@@ -82,10 +83,17 @@ public class ViewTableController {
             newTranslations = new ArrayList<Translation>();
             removedTranslations = new ArrayList<Translation>();
             wordsTable.setItems(translations);
+            idFromDb = DatabaseHandler.getHighestId(); 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
+//    private int getHighestIdFromTables() {
+//        int pid = pWords.isEmpty() ? 0 : pWords.get(pWords.size() - 1).getId();
+//        int fid = fWords.isEmpty() ? 0 : fWords.get(fWords.size() - 1).getId();
+//        return pid > fid ? pid : fid;
+//    }
     
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -196,10 +204,10 @@ public class ViewTableController {
     
     private Word createWord(String lang, String tableName, String word) {
         int id = getWordId(word, lang);
-        //System.out.println("id retrived: " + id);
+        System.out.println("id retrived: " + id);
         if(id == -1) {
             int newId = getHighestId() + 1;
-            //System.out.println("New id: " + newId);
+            System.out.println("New id: " + newId);
             return new Word(newId, lang, word, tableName);
         } else {
             return new Word(id, lang, word, tableName);
@@ -218,7 +226,8 @@ public class ViewTableController {
             }
         }
         //System.out.println("Res: " + res);
-        return res;
+        return res > idFromDb ? res : idFromDb;
+        
     }
     
     private int getWordId(String word, String lang) {
