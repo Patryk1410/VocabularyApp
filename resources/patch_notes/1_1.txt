@@ -1,0 +1,7 @@
+patch 1.1
+
++ 'About', and 'Patch notes' buttons added
++ Slight design changes
+- App creates 'Basics' table
+- Database can now be imported
+- There is a readMe file, describing how application works

@@ -39,6 +39,44 @@ public class DatabaseHandler {
             query = "create table translations (id1 int, id2 int)";
             p = connection.prepareStatement(query);
             p.execute();
+            createBasic();
+        }
+    }
+    
+    public static void createBasic() throws SQLException {
+        String[] values = {
+                "1, 'P', 'ja', 'Basic'",
+                "2, 'F', 'je', 'Basic'",
+                "3, 'P', 'ty', 'Basic'",
+                "4, 'F', 'tu', 'Basic'",
+                "5, 'P', 'on', 'Basic'",
+                "6, 'F', 'il', 'Basic'",
+                "7, 'P', 'ona', 'Basic'",
+                "8, 'F', 'elle', 'Basic'",
+                "9, 'P', 'to', 'Basic'",
+                "10, 'P', 'tak', 'Basic'",
+                "11, 'F', 'oui', 'Basic'",
+                "12, 'P', 'nie', 'Basic'",
+                "13, 'F', 'non', 'Basic'"
+        };
+        String[] values2 = {
+                "1, 2",
+                "3, 4",
+                "5, 6",
+                "7, 8",
+                "9, 6",
+                "10, 11",
+                "12, 13"
+        };
+        for(String s : values) {
+            String query = "insert into wordbank values (" + s + ")";
+            PreparedStatement ps = connection.prepareStatement(query);  
+            ps.executeUpdate();
+        }
+        for(String s : values2) {
+            String query = "insert into translations values (" + s + ")";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.executeUpdate();
         }
     }
     

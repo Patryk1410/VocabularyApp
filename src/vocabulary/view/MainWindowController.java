@@ -1,5 +1,9 @@
 package vocabulary.view;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javafx.collections.ObservableList;
@@ -69,6 +73,47 @@ public class MainWindowController {
         }
     }
     
+    private boolean showConfiramtionAlert(String tableName) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initOwner(stage);
+        alert.setTitle("Remove table");
+        alert.setHeaderText("Are you sure you want to remove table " + tableName + "?");
+        alert.setContentText("This will remove the table and its entire content. Once it is done"
+                + " it can't be reverted.");
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
+    }
+    
+    private void showWarningAlert(boolean chooseTable, boolean enterNumber, boolean invalidNumber) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.initOwner(stage);
+        alert.setTitle("Starting error");
+        alert.setHeaderText("Cannot start test for the following reasons:");
+        String s1 = chooseTable ? "-You did not choose a table\n" : "";
+        String s2 = enterNumber ? "-You did not enter a number of words\n" : "";
+        String s3 = invalidNumber ? "-You did not enter a valid number of words" : "";
+        alert.setContentText(s1 + s2 + s3);
+        alert.showAndWait();
+    }
+    
+    private void showInformationAlert(String msg, String title, String header) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.initOwner(stage);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+    
+    private boolean checkIfNumberValid() {
+        try {
+            int n = Integer.parseInt(numberOfWordsField.getText());
+            return n > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
     @FXML
     private void handleAddTable() {
         CustomString tableName = new CustomString();
@@ -125,35 +170,46 @@ public class MainWindowController {
         }
     }
     
-    private boolean showConfiramtionAlert(String tableName) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.initOwner(stage);
-        alert.setTitle("Remove table");
-        alert.setHeaderText("Are you sure you want to remove table " + tableName + "?");
-        alert.setContentText("This will remove the table and its entire content. Once it is done"
-                + " it can't be reverted.");
-        alert.showAndWait();
-        return alert.getResult() == ButtonType.OK;
+    @FXML
+    private void handleAbout() {
+        try(BufferedReader br = new BufferedReader(new FileReader("resources/about.txt"))) {
+            String line = "";
+            String msg = "";
+            while((line = br.readLine()) != null) {
+                msg += line + '\n';
+            }
+            String title = "About";
+            String header = "Vocabulary app";
+            showInformationAlert(msg, title, header);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
-    private void showWarningAlert(boolean chooseTable, boolean enterNumber, boolean invalidNumber) {
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.initOwner(stage);
-        alert.setTitle("Starting error");
-        alert.setHeaderText("Cannot start test for the following reasons:");
-        String s1 = chooseTable ? "-You did not choose a table\n" : "";
-        String s2 = enterNumber ? "-You did not enter a number of words\n" : "";
-        String s3 = invalidNumber ? "-You did not enter a valid number of words" : "";
-        alert.setContentText(s1 + s2 + s3);
-        alert.showAndWait();
-    }
-    
-    private boolean checkIfNumberValid() {
-        try {
-            int n = Integer.parseInt(numberOfWordsField.getText());
-            return n > 0;
-        } catch (NumberFormatException e) {
-            return false;
+    @FXML
+    private void handlePatchNotes() {
+        String[] fileNames = {"1_1.txt"};
+        String msg = "";
+        String title = "Patch Notes";
+        String header = "Patch Notes";
+        for (String s : fileNames) {
+            s = "resources/patch_notes/" + s;
+            try (BufferedReader br = new BufferedReader(new FileReader(s))) {
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    msg += line + '\n';
+                }
+                showInformationAlert(msg, title, header);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+                break;
+            }
+            s += '\n';
         }
     }
 }
