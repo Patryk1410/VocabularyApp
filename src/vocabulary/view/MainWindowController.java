@@ -1,10 +1,22 @@
 package vocabulary.view;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,6 +30,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import vocabulary.MainApp;
 import vocabulary.data.DatabaseHandler;
+import vocabulary.model.Translation;
+import vocabulary.model.Word;
 import vocabulary.util.CustomString;
 
 public class MainWindowController {
@@ -190,7 +204,7 @@ public class MainWindowController {
     
     @FXML
     private void handlePatchNotes() {
-        String[] fileNames = {"1_1.txt"};
+        String[] fileNames = {"1_1.txt", "1_2.txt"};
         String msg = "";
         String title = "Patch Notes";
         String header = "Patch Notes";
@@ -211,5 +225,34 @@ public class MainWindowController {
             }
             s += '\n';
         }
+    }
+    
+    @FXML
+    private void handleImportDatabase() {
+        try {
+            List<Word> pWordList = DatabaseHandler.getWordList('P');
+            List<Word> fWordList = DatabaseHandler.getWordList('F');
+            List<Translation> translationList = DatabaseHandler.getTranslationList();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.newDocument();
+            Element rootElement = document.createElement("Data");
+            document.appendChild(rootElement);
+            Element pWords = document.createElement("pWords");
+            rootElement.appendChild(pWords);
+            for (Word w : pWordList) {
+                Element pWord = document.createElement("pWord");
+                Attr idAttr = document.createAttribute("id");
+                idAttr.setValue(Integer.toString(w.getId()));
+                pWord.setAttributeNode(idAttr); //<- Tu skonczyles
+                pWords.appendChild(pWord);
+                
+            }
+            
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
     }
 }

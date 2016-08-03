@@ -151,6 +151,19 @@ public class DatabaseHandler {
         return res;
     }
     
+    public static List<Translation> getTranslationList() throws SQLException {
+        List<Translation> res = new ArrayList<Translation>();
+        Statement s = connection.createStatement();
+        String query = "select * from translations";
+        ResultSet rs = s.executeQuery(query);
+        while(rs.next()) {
+            int id1 = rs.getInt(1);
+            int id2 = rs.getInt(2);
+            res.add(new Translation(id1, id2));
+        }
+        return res;
+    }
+    
     public static void deleteTranslationsFromTable(String tableName) throws SQLException {
         Statement s = connection.createStatement();
         String subQuery = "(select id from wordbank where source = '" + tableName + "')";
