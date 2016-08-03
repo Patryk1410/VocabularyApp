@@ -174,7 +174,7 @@ public class ViewTableController {
         if (pStr == null || pStr.isEmpty() || fStr == null || fStr.isEmpty()) {
             return false;
         }
-        String regex = "[a-zéèçàôûöüîïêâëäęóąśżźćńł?'\\s]+";
+        String regex = "[a-zéèçàôûöüîïêâëäęóąśżźćńł?'\\-\\s]+";
         if(pStr.matches(regex) && fStr.matches(regex)) {
             return true;
         } else {
@@ -231,7 +231,6 @@ public class ViewTableController {
     }
     
     private int getWordId(String word, String lang) {
-        String res = null;
         ObservableList<Word> temp = lang.equals("P") ? pWords : fWords;
         for (Word w : temp) {
             if(w.getWord().equals(word)) {
@@ -252,6 +251,7 @@ public class ViewTableController {
             for(Translation t : removedTranslations) {
                 DatabaseHandler.deleteTranslation(t);
             }
+            DatabaseHandler.clearDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
         }
