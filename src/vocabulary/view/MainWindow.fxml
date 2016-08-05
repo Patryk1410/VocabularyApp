@@ -27,7 +27,7 @@
                   <Button layoutX="35.0" layoutY="328.0" mnemonicParsing="false" onAction="#handleAbout" text="About" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <Button layoutX="35.0" layoutY="367.0" mnemonicParsing="false" onAction="#handlePatchNotes" text="Patch Notes" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <Button layoutY="20.0" mnemonicParsing="false" onAction="#handleAddTable" prefHeight="25.0" prefWidth="175.0" text="Import Databse" />
-                  <Button fx:id="editTable1" layoutY="60.0" mnemonicParsing="false" onAction="#handleEditTable" prefHeight="25.0" prefWidth="175.0" text="Export Database" />
+                  <Button layoutY="60.0" mnemonicParsing="false" onAction="#handleExportDatabase" prefHeight="25.0" prefWidth="175.0" text="Export Database" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

@@ -2,6 +2,7 @@ package vocabulary.view;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,7 +13,14 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
+import org.apache.derby.iapi.store.raw.xact.TransactionFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -228,30 +236,83 @@ public class MainWindowController {
     }
     
     @FXML
-    private void handleImportDatabase() {
+    private void handleExportDatabase() {
         try {
             List<Word> pWordList = DatabaseHandler.getWordList('P');
             List<Word> fWordList = DatabaseHandler.getWordList('F');
             List<Translation> translationList = DatabaseHandler.getTranslationList();
+            
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.newDocument();
+            
             Element rootElement = document.createElement("Data");
             document.appendChild(rootElement);
+            
             Element pWords = document.createElement("pWords");
             rootElement.appendChild(pWords);
             for (Word w : pWordList) {
                 Element pWord = document.createElement("pWord");
-                Attr idAttr = document.createAttribute("id");
-                idAttr.setValue(Integer.toString(w.getId()));
-                pWord.setAttributeNode(idAttr); //<- Tu skonczyles
                 pWords.appendChild(pWord);
-                
+                Element idElem = document.createElement("id");
+                pWord.appendChild(idElem);
+                idElem.appendChild(document.createTextNode(Integer.toString(w.getId())));
+                Element languageElem = document.createElement("language");
+                pWord.appendChild(languageElem);
+                languageElem.appendChild(document.createTextNode(Character.toString(w.getLanguage())));
+                Element wordElem = document.createElement("word");
+                pWord.appendChild(wordElem);
+                wordElem.appendChild(document.createTextNode(w.getWord()));
+                Element sourceElem = document.createElement("source");
+                pWord.appendChild(sourceElem);
+                sourceElem.appendChild(document.createTextNode(w.getSource()));
             }
+            
+            Element fWords = document.createElement("fWords");
+            rootElement.appendChild(fWords);
+            for (Word w : fWordList) {
+                Element fWord = document.createElement("fWord");
+                fWords.appendChild(fWord);
+                Element idElem = document.createElement("id");
+                fWord.appendChild(idElem);
+                idElem.appendChild(document.createTextNode(Integer.toString(w.getId())));
+                Element languageElem = document.createElement("language");
+                fWord.appendChild(languageElem);
+                languageElem.appendChild(document.createTextNode(Character.toString(w.getLanguage())));
+                Element wordElem = document.createElement("word");
+                fWord.appendChild(wordElem);
+                wordElem.appendChild(document.createTextNode(w.getWord()));
+                Element sourceElem = document.createElement("source");
+                fWord.appendChild(sourceElem);
+                sourceElem.appendChild(document.createTextNode(w.getSource()));
+            }
+            
+            Element translations = document.createElement("translations");
+            rootElement.appendChild(translations);
+            for (Translation t : translationList) {
+                Element translation = document.createElement("translation");
+                translations.appendChild(translation);
+                Element firstId = document.createElement("id1");
+                translation.appendChild(firstId);
+                firstId.appendChild(document.createTextNode(Integer.toString(t.getPid())));
+                Element secondId = document.createElement("id2");
+                translation.appendChild(secondId);
+                secondId.appendChild(document.createTextNode(Integer.toString(t.getFid())));
+            }
+            
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(document);
+            StreamResult result = new StreamResult(new File("data.xml"));
+            transformer.transform(source, result);
             
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
             e.printStackTrace();
         } 
     }
