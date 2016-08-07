@@ -259,6 +259,39 @@ public class DatabaseHandler {
         return res;
     }
     
+    public static void importDatabase(List<Word> pWords, List<Word> fWords, List<Translation> translations) throws SQLException {
+        String query1 = "delete from wordbank";
+        String query2 = "delete from translations";
+        String query3 = "insert into wordbank values (?, ?, ?, ?)";
+        String query4 = "insert into translations values (?, ?)";
+        
+        PreparedStatement s = connection.prepareStatement(query1);
+        s.executeUpdate();
+        s = connection.prepareStatement(query2);
+        s.executeUpdate();
+        s = connection.prepareStatement(query3);
+        for (Word w : pWords) {
+            s.setInt(1, w.getId());
+            s.setString(2, "P");
+            s.setString(3, w.getWord());
+            s.setString(4, w.getSource());
+            s.executeUpdate();
+        }
+        for (Word w : fWords) {
+            s.setInt(1, w.getId());
+            s.setString(2, "F");
+            s.setString(3, w.getWord());
+            s.setString(4, w.getSource());
+            s.executeUpdate();
+        }
+        s = connection.prepareStatement(query4);
+        for (Translation t : translations) {
+            s.setInt(1, t.getPid());
+            s.setInt(2, t.getFid());
+            s.executeUpdate();
+        }
+    }
+    
     public static void clearDatabase() {
         try {
             Statement s = connection.createStatement();
