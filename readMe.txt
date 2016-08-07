@@ -1,4 +1,4 @@
-Vocabulary App v 1.1
+Vocabulary App v1.2
 
 This application was created to support learning french language.
 Later on it may be modified to include other languages.
@@ -11,6 +11,9 @@ contents of one table or all words you have inserted so far.
 
 Application has built-in table 'Basics' containing most basic polish and
 french words. You can expand it or create more tables.
+
+Using import/export buttons you can save state of your Database as an
+XML file and then load it into app when needed
 
 While inserting new words you may only use LOWERCASE LETTERS.
 During testing your answers are changed to lower case and then compared with

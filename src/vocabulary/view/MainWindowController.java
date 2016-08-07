@@ -224,7 +224,7 @@ public class MainWindowController {
                 while ((line = br.readLine()) != null) {
                     msg += line + '\n';
                 }
-                showInformationAlert(msg, title, header);
+                msg += '\n';
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 break;
@@ -234,6 +234,7 @@ public class MainWindowController {
             }
             s += '\n';
         }
+        showInformationAlert(msg, title, header);
     }
     
     @FXML

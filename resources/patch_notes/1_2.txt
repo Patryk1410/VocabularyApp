@@ -3,3 +3,4 @@ patch 1.2
 
 - '-' sign now can be used in words
 - Removed words no longer appear during tests
+- Import/Export buttons added
