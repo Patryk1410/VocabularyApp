@@ -143,6 +143,7 @@ public class MainWindowController {
         boolean okClicked = mainApp.showTableCreationDialog(tableName);
         if(okClicked) {
             tables.add(tableName.get());
+            mainApp.showViewTable(tableName.get());
         }
     }
     
@@ -224,7 +225,7 @@ public class MainWindowController {
                 while ((line = br.readLine()) != null) {
                     msg += line + '\n';
                 }
-                showInformationAlert(msg, title, header);
+                msg += '\n';
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 break;
@@ -234,6 +235,7 @@ public class MainWindowController {
             }
             s += '\n';
         }
+        showInformationAlert(msg, title, header);
     }
     
     @FXML

@@ -11,6 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -29,11 +32,15 @@ public class ViewTableController {
     private TableColumn<Translation,String> fWordColumn;
     @FXML
     private Button removeBtn;
+    @FXML
+    private ChoiceBox<String> anotherTable;
     
     @FXML
     private TextField pField;
     @FXML
     private TextField fField;
+    @FXML 
+    private Label tableNameLbl;
     
     private Stage stage;
     private Scene previousScene;
@@ -41,15 +48,18 @@ public class ViewTableController {
     private ObservableList<Word> pWords;
     private ObservableList<Word> fWords;
     private ObservableList<Translation> translations;
+    private ObservableList<String> tableNames;
     private List<Word> newWords;
     private List<Translation> newTranslations;
     private List<Translation> removedTranslations;
     private int idFromDb;
+    private boolean changesSaved = true;
     
     public ViewTableController() { }
     
     @FXML
     private void initialize() {
+       
         pWordColumn.setCellValueFactory(cellData -> {
             SimpleStringProperty prop = new SimpleStringProperty();
             String word = getWord(cellData.getValue().getPid(), 'P');
@@ -64,6 +74,8 @@ public class ViewTableController {
         });
         wordsTable.getSelectionModel().selectedItemProperty().
             addListener((observable, oldValue, newValue) -> updateWindow());
+            
+        
     }
     
     private void updateWindow() {
@@ -83,7 +95,19 @@ public class ViewTableController {
             newTranslations = new ArrayList<Translation>();
             removedTranslations = new ArrayList<Translation>();
             wordsTable.setItems(translations);
-            idFromDb = DatabaseHandler.getHighestId(); 
+            idFromDb = DatabaseHandler.getHighestId();
+            tableNameLbl.setText(tableName);
+            tableNames = DatabaseHandler.getTableNames();
+            tableNames.remove(tableName);
+            if(tableNames.size() == 0) {
+                anotherTable.setDisable(true);
+            }
+            else {
+                anotherTable.setDisable(false);
+                anotherTable.setItems(tableNames);
+                anotherTable.getSelectionModel().selectedItemProperty().
+                addListener((observable, oldValue, newValue) -> changeTable(newValue));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -115,6 +139,15 @@ public class ViewTableController {
     
     @FXML
     private void handleCancel() {
+        if (!changesSaved) {
+            String header = "You have unsaved changes.";
+            String message = "Would you like to save you changes now before you quit?";
+            String title = "Unsaved changes";
+            if(showConfiramtionAlert(header, message, title)) {
+                saveChanges();
+            }
+            changesSaved = true;
+        }
         stage.setScene(previousScene);
     }
     
@@ -152,6 +185,7 @@ public class ViewTableController {
                 }
                 removedTranslations.remove(translation);
             }
+            changesSaved = false;
             pField.clear();
             fField.clear();
             pField.requestFocus();
@@ -167,6 +201,7 @@ public class ViewTableController {
         translations.remove(translation);
         newTranslations.remove(translation);
         removedTranslations.add(translation);
+        changesSaved = false;
     }
     
     private boolean checkTextFields() {
@@ -200,6 +235,16 @@ public class ViewTableController {
         alert.setHeaderText(header);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    
+    private boolean showConfiramtionAlert(String header, String message, String title) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initOwner(stage);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
+        return alert.getResult() == ButtonType.OK;
     }
     
     private Word createWord(String lang, String tableName, String word) {
@@ -251,7 +296,31 @@ public class ViewTableController {
             for(Translation t : removedTranslations) {
                 DatabaseHandler.deleteTranslation(t);
             }
+            changesSaved = true;
             DatabaseHandler.clearDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void changeTable(String newTable) {
+        try {
+            if (newTable != null) {
+                if (!changesSaved) {
+                    String header = "You have unsaved changes.";
+                    String message = "Would you like to save you changes now before you quit?";
+                    String title = "Unsaved changes";
+                    if(showConfiramtionAlert(header, message, title)) {
+                        saveChanges();
+                    }
+                    changesSaved = true;
+                }
+                System.out.println("new table " + newTable);
+                tableName = newTable;
+                initData();
+                tableNames = DatabaseHandler.getTableNames();
+                tableNames.remove(tableName);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

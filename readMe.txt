@@ -1,4 +1,4 @@
-Vocabulary App v 1.1
+Vocabulary App v 1.2
 
 This application was created to support learning french language.
 Later on it may be modified to include other languages.
