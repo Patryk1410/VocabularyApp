@@ -37,6 +37,7 @@ public class AskQuestionController {
     private int score;
     private Map<String,List<String>> questions;
     private List<String> questionList;
+    private List<String> copyQuestionList;
     private Random randomGenerator;
     
     private String tableName;
@@ -48,14 +49,15 @@ public class AskQuestionController {
         this.allWords = allWords;
         this.toPolish = toPolish;
         this.tableName = tableName;
-        questions = new TreeMap<String,List<String>>();
-        questionList = new ArrayList<String>();
+        questions = new TreeMap<>();
+        questionList = new ArrayList<>();
         questionNumber = 1;
         score = 0;
         randomGenerator = new Random();
         getQuestions();
         this.numberOfQuestions = allWords ? questions.size() : numberOfQuestions;
-        this.questionId = allWords ? questionNumber - 1 : randomGenerator.nextInt(questionList.size());
+        this.questionId = randomGenerator.nextInt(questionList.size());
+        copyQuestionList = new ArrayList<>(questionList);
         askQuestion();
     }
     
@@ -98,7 +100,7 @@ public class AskQuestionController {
             showCorrectAnswerAlert();
             score++;
         } else {
-            String q = questionList.get(questionId);
+            String q = copyQuestionList.get(questionId);
             showWrongAnswerAlert(q);
         }
         if(questionNumber == numberOfQuestions) {
@@ -106,13 +108,17 @@ public class AskQuestionController {
             stage.close();
         } else {
             questionNumber++;
-            questionId = allWords ? questionNumber - 1 : randomGenerator.nextInt(questionList.size());
+            copyQuestionList.remove(questionId);
+            if (copyQuestionList.isEmpty()) {
+                copyQuestionList = new ArrayList<>(questionList);
+            }
+            questionId = randomGenerator.nextInt(copyQuestionList.size());
             askQuestion();
         }
     }
     
     private boolean checkAnswer(String ans) {
-        String q = questionList.get(questionId);
+        String q = copyQuestionList.get(questionId);
         ans = ans.trim().toLowerCase();
         return questions.get(q).contains(ans);
     }
@@ -165,7 +171,7 @@ public class AskQuestionController {
         answer.clear();
         answer.requestFocus();
         counter.setText(questionNumber + "/" + numberOfQuestions);
-        String q = questionList.get(questionId);
+        String q = copyQuestionList.get(questionId);
         question.setText(q);
     }
 }

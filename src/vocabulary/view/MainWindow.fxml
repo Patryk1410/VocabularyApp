@@ -24,8 +24,8 @@
                   <Separator layoutY="104.0" prefHeight="3.0" prefWidth="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <Label layoutX="5.0" layoutY="115.0" text="Select Table" />
                   <Separator layoutX="4.0" layoutY="310.0" prefHeight="3.0" prefWidth="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button layoutX="35.0" layoutY="328.0" mnemonicParsing="false" onAction="#handleAbout" text="About" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button layoutX="35.0" layoutY="367.0" mnemonicParsing="false" onAction="#handlePatchNotes" text="Patch Notes" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutX="35.0" layoutY="325.0" mnemonicParsing="false" onAction="#handleAbout" text="About" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutX="35.0" layoutY="366.0" mnemonicParsing="false" onAction="#handlePatchNotes" text="Patch Notes" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <Button layoutY="20.0" mnemonicParsing="false" onAction="#handleImportDatabase" prefHeight="25.0" prefWidth="175.0" text="Import Databse" />
                   <Button layoutY="60.0" mnemonicParsing="false" onAction="#handleExportDatabase" prefHeight="25.0" prefWidth="175.0" text="Export Database" />
                </children>

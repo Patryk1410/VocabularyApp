@@ -1,0 +1,8 @@
+patch 1.3
+10.08.2016
+
+- You can now switch to another table from 'edit' view of a table
+- There is table name displayed in 'edit' view of a table
+- Creating new table automatically enters its 'edit' view
+- While testing all words from a table words are now given in random order
+- While testing number of words the same words will be asked less often
