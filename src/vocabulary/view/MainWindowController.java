@@ -214,7 +214,7 @@ public class MainWindowController {
     
     @FXML
     private void handlePatchNotes() {
-        String[] fileNames = {"1_1.txt", "1_2.txt"};
+        String[] fileNames = {"1_1.txt", "1_2.txt", "1_3.txt"};
         String msg = "";
         String title = "Patch Notes";
         String header = "Patch Notes";
