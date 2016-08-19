@@ -120,7 +120,17 @@ public class AskQuestionController {
     private boolean checkAnswer(String ans) {
         String q = copyQuestionList.get(questionId);
         ans = ans.trim().toLowerCase();
-        return questions.get(q).contains(ans);
+        List<String> processedAnswers = new ArrayList<>(), answers = questions.get(q);
+        for (String s : answers) {
+            while (s.contains(",")) {
+                int index = s.indexOf(',');
+                String tmp = s.substring(0, index);
+                processedAnswers.add(tmp);
+                s = s.substring(index + 1).trim();
+            }
+            processedAnswers.add(s);
+        }
+        return processedAnswers.contains(ans);
     }
     
     private void showCorrectAnswerAlert() {

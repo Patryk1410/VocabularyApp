@@ -162,6 +162,8 @@ public class ViewTableController {
         if(checkTextFields()) {
             //System.out.println("correct");
             String pStr = pField.getText(), fStr = fField.getText();
+            pStr = pStr.trim().toLowerCase();
+            fStr = fStr.trim().toLowerCase();
             Word pWord = createWord("P", tableName, pStr);
             if(!pWords.contains(pWord)) {
                 pWords.add(pWord);
@@ -209,7 +211,7 @@ public class ViewTableController {
         if (pStr == null || pStr.isEmpty() || fStr == null || fStr.isEmpty()) {
             return false;
         }
-        String regex = "[a-zéèçàôûöüîïêâëäęóąśżźćńł?'\\-\\s]+";
+        String regex = "[^,][^0-9~!@#$%^&*()_=+\\[{}\\]|\\\\;:<>/]+[^,]";
         if(pStr.matches(regex) && fStr.matches(regex)) {
             return true;
         } else {
