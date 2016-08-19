@@ -11,23 +11,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vocabulary.view.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vocabulary.view.MainWindowController">
    <children>
-      <SplitPane dividerPositions="0.29797979797979796" layoutX="78.0" layoutY="67.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.23684210526315788" layoutX="78.0" layoutY="67.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Button layoutY="178.0" mnemonicParsing="false" onAction="#handleAddTable" prefHeight="25.0" prefWidth="175.0" text="Add Table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button fx:id="editTable" disable="true" layoutY="218.0" mnemonicParsing="false" onAction="#handleEditTable" prefHeight="25.0" prefWidth="175.0" text="Edit Table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button fx:id="removeTable" disable="true" layoutY="258.0" mnemonicParsing="false" onAction="#handleRemoveTable" prefHeight="25.0" prefWidth="175.0" text="Remove Table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <ChoiceBox fx:id="chooseTable" layoutY="132.0" prefHeight="25.0" prefWidth="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutY="207.0" mnemonicParsing="false" onAction="#handleAddTable" prefHeight="25.0" prefWidth="175.0" text="Add Table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button fx:id="editTable" disable="true" layoutY="247.0" mnemonicParsing="false" onAction="#handleEditTable" prefHeight="25.0" prefWidth="175.0" text="Edit Table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button fx:id="removeTable" disable="true" layoutY="287.0" mnemonicParsing="false" onAction="#handleRemoveTable" prefHeight="25.0" prefWidth="175.0" text="Remove Table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <ChoiceBox fx:id="chooseTable" layoutY="161.0" prefHeight="25.0" prefWidth="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <Separator layoutY="104.0" prefHeight="3.0" prefWidth="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Label layoutX="5.0" layoutY="115.0" text="Select Table" />
-                  <Separator layoutX="4.0" layoutY="310.0" prefHeight="3.0" prefWidth="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button layoutX="35.0" layoutY="325.0" mnemonicParsing="false" onAction="#handleAbout" text="About" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button layoutX="35.0" layoutY="366.0" mnemonicParsing="false" onAction="#handlePatchNotes" text="Patch Notes" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Button layoutY="20.0" mnemonicParsing="false" onAction="#handleImportDatabase" prefHeight="25.0" prefWidth="175.0" text="Import Databse" />
-                  <Button layoutY="60.0" mnemonicParsing="false" onAction="#handleExportDatabase" prefHeight="25.0" prefWidth="175.0" text="Export Database" />
+                  <Label layoutX="5.0" layoutY="144.0" text="Select Table" />
+                  <Separator layoutY="331.0" prefHeight="3.0" prefWidth="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutY="511.0" mnemonicParsing="false" onAction="#handleAbout" text="About" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutY="552.0" mnemonicParsing="false" onAction="#handlePatchNotes" text="Patch Notes" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutY="20.0" mnemonicParsing="false" onAction="#handleImportDatabase" prefHeight="25.0" prefWidth="175.0" text="Import Databse" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutY="60.0" mnemonicParsing="false" onAction="#handleExportDatabase" prefHeight="25.0" prefWidth="175.0" text="Export Database" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -36,33 +36,40 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <Label layoutX="176.0" layoutY="7.0" prefHeight="27.0" prefWidth="64.0" text="Options" textAlignment="CENTER">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="14.0" prefHeight="35.0" prefWidth="555.0" text="Options" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                  <font>
-                                    <Font size="18.0" />
+                                    <Font size="24.0" />
                                  </font>
                               </Label>
-                              <Separator layoutY="39.0" prefHeight="3.0" prefWidth="417.0" />
-                              <RadioButton layoutX="14.0" layoutY="60.0" mnemonicParsing="false" selected="true" text="Select words from chosen table">
+                              <Separator layoutY="58.0" prefHeight="3.0" prefWidth="417.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                              <RadioButton layoutX="14.0" layoutY="79.0" mnemonicParsing="false" selected="true" text="Select words from chosen table">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="radioGroup1" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="allTablesRdbtn" layoutX="14.0" layoutY="85.0" mnemonicParsing="false" text="Select words from all tables" toggleGroup="$radioGroup1" />
-                              <Separator layoutY="118.0" prefHeight="3.0" prefWidth="417.0" />
-                              <RadioButton fx:id="allWordsRdbtn" layoutX="14.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleAllWords" selected="true" text="Select all words">
+                              <RadioButton fx:id="allTablesRdbtn" layoutX="14.0" layoutY="104.0" mnemonicParsing="false" text="Select words from all tables" toggleGroup="$radioGroup1" />
+                              <Separator layoutY="137.0" prefHeight="3.0" prefWidth="417.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                              <RadioButton fx:id="allWordsRdbtn" layoutX="14.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleAllWords" selected="true" text="Select all words">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="radioGroup2" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton layoutX="14.0" layoutY="164.0" mnemonicParsing="false" onAction="#handleNumberOfWords" text="Select number of words" toggleGroup="$radioGroup2" />
-                              <TextField fx:id="numberOfWordsField" disable="true" layoutX="176.0" layoutY="160.0" prefHeight="25.0" prefWidth="35.0" />
-                              <Separator layoutY="197.0" prefHeight="3.0" prefWidth="417.0" />
-                              <RadioButton fx:id="toPolishRdbtn" layoutX="14.0" layoutY="218.0" mnemonicParsing="false" selected="true" text="Translate to polish">
+                              <RadioButton layoutX="14.0" layoutY="183.0" mnemonicParsing="false" onAction="#handleNumberOfWords" text="Select number of words" toggleGroup="$radioGroup2" />
+                              <TextField fx:id="numberOfWordsField" disable="true" layoutX="176.0" layoutY="179.0" prefHeight="25.0" prefWidth="35.0" />
+                              <Separator layoutY="216.0" prefHeight="3.0" prefWidth="417.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                              <RadioButton fx:id="toPolishRdbtn" layoutX="14.0" layoutY="237.0" mnemonicParsing="false" selected="true" text="Translate to polish">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="radioGroup3" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton layoutX="14.0" layoutY="243.0" mnemonicParsing="false" text="Translate to french" toggleGroup="$radioGroup3" />
+                              <RadioButton layoutX="14.0" layoutY="262.0" mnemonicParsing="false" text="Translate to french" toggleGroup="$radioGroup3" />
+                              <Separator layoutX="25.0" layoutY="295.0" prefHeight="3.0" prefWidth="555.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                              <RadioButton fx:id="learnRdbtn" layoutX="14.0" layoutY="316.0" mnemonicParsing="false" selected="true" text="Learn a table">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="radioGroup4" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton layoutX="14.0" layoutY="341.0" mnemonicParsing="false" text="Test your vocabulary" toggleGroup="$radioGroup4" />
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -50,6 +53,8 @@ public class MainWindowController {
     private RadioButton allWordsRdbtn;
     @FXML
     private RadioButton toPolishRdbtn;
+    @FXML
+    private RadioButton learnRdbtn;
     
     private MainApp mainApp;
     private ObservableList<String> tables;
@@ -182,10 +187,11 @@ public class MainWindowController {
         boolean allTables = allTablesRdbtn.isSelected();
         boolean allWords = allWordsRdbtn.isSelected();
         boolean toPolish = toPolishRdbtn.isSelected();
+        boolean learn = learnRdbtn.isSelected();
         String tableName = allTables ? null : chooseTable.getSelectionModel().getSelectedItem();
         if ((allTables || tableName != null) && (allWords || (!numberOfWordsField.getText().isEmpty() && checkIfNumberValid()))) { 
             int numberOfWords = allWords ? 0 : Integer.parseInt(numberOfWordsField.getText());
-            mainApp.startTest(allTables, allWords, toPolish, tableName, numberOfWords);
+            mainApp.startTest(allTables, allWords, toPolish, learn, tableName, numberOfWords);
         } else {
             boolean b1 = !allTables && tableName == null;
             boolean b2 = !allWords && numberOfWordsField.getText().isEmpty();
@@ -214,12 +220,13 @@ public class MainWindowController {
     
     @FXML
     private void handlePatchNotes() {
-        String[] fileNames = {"1_1.txt", "1_2.txt", "1_3.txt"};
         String msg = "";
         String title = "Patch Notes";
         String header = "Patch Notes";
-        for (String s : fileNames) {
-            s = "resources/patch_notes/" + s;
+        File directory = new File("resources/patch_notes");
+        for (File f : directory.listFiles())
+        {
+            String s = f.getAbsolutePath();
             try (BufferedReader br = new BufferedReader(new FileReader(s))) {
                 String line = "";
                 while ((line = br.readLine()) != null) {

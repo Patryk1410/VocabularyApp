@@ -31,6 +31,7 @@ public class AskQuestionController {
     private boolean allTables;
     private boolean allWords;
     private boolean toPolish;
+    private boolean learn;
     private int questionNumber;
     private int numberOfQuestions;
     private int questionId;
@@ -44,10 +45,11 @@ public class AskQuestionController {
     
     public AskQuestionController() { }
     
-    public void init(boolean allTables, boolean allWords, boolean toPolish, String tableName, int numberOfQuestions) {
+    public void init(boolean allTables, boolean allWords, boolean toPolish, boolean learn, String tableName, int numberOfQuestions) {
         this.allTables = allTables;
         this.allWords = allWords;
         this.toPolish = toPolish;
+        this.learn = learn;
         this.tableName = tableName;
         questions = new TreeMap<>();
         questionList = new ArrayList<>();
@@ -95,21 +97,30 @@ public class AskQuestionController {
     
     @FXML
     private void handleCheck() {
+        boolean correctAnswer;
         String ans = answer.getText();
         if (checkAnswer(ans)) {
             showCorrectAnswerAlert();
+            correctAnswer = true;
             score++;
         } else {
+            correctAnswer = false;
             String q = copyQuestionList.get(questionId);
             showWrongAnswerAlert(q);
         }
-        if(questionNumber == numberOfQuestions) {
+        if(questionNumber == numberOfQuestions && !learn) {
             showTestFinishedAlert();
             stage.close();
         } else {
             questionNumber++;
-            copyQuestionList.remove(questionId);
-            if (copyQuestionList.isEmpty()) {
+            if (correctAnswer || !learn)  {
+                copyQuestionList.remove(questionId);
+                if (copyQuestionList.isEmpty() && learn) {
+                    showTestFinishedAlert();
+                    stage.close();
+                }
+            }
+            if (copyQuestionList.isEmpty() && !learn) {
                 copyQuestionList = new ArrayList<>(questionList);
             }
             questionId = randomGenerator.nextInt(copyQuestionList.size());
@@ -170,17 +181,21 @@ public class AskQuestionController {
     private void showTestFinishedAlert() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.initOwner(stage);
-        alert.setTitle("Test finished");
-        alert.setHeaderText("The test is finished");
+        alert.setTitle(learn ? "Learning finished" : "Test finished");
+        alert.setHeaderText(learn ? "You finished learning this table" : "The test is finished");
         int percent = score * 100 / numberOfQuestions;
-        alert.setContentText("Your score is " + score + "/" + numberOfQuestions + " (" + percent + "%)");
+        alert.setContentText(learn ? "" : "Your score is " + score + "/" + numberOfQuestions + " (" + percent + "%)");
         alert.showAndWait();
     }
     
     private void askQuestion() {
         answer.clear();
         answer.requestFocus();
-        counter.setText(questionNumber + "/" + numberOfQuestions);
+        if (learn) {
+            counter.setText("Questions left: " + copyQuestionList.size());
+        } else {
+            counter.setText(questionNumber + "/" + numberOfQuestions);
+        }
         String q = copyQuestionList.get(questionId);
         question.setText(q);
     }
