@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
@@ -21,14 +20,13 @@
                   <Button fx:id="removeBtn" disable="true" layoutY="177.0" mnemonicParsing="false" onAction="#handleRemove" prefHeight="25.0" prefWidth="112.0" text="Remove" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <TextField fx:id="pField" layoutY="49.0" promptText="Polish word" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <TextField fx:id="fField" layoutY="89.0" promptText="French word" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Label layoutX="8.0" layoutY="231.0" text="Choose antoher table" />
                   <Separator layoutY="218.0" prefHeight="4.0" prefWidth="144.0" />
-                  <ChoiceBox fx:id="anotherTable" layoutY="251.0" prefHeight="25.0" prefWidth="144.0" />
                   <Label fx:id="tableNameLbl" alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="25.0" prefWidth="144.0" text="Label" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
+                  <Button fx:id="anotherTable" layoutX="46.0" layoutY="240.0" mnemonicParsing="false" onAction="#handleChooseAnotherTable" text="Choose another table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

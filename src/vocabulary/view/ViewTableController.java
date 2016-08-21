@@ -1,5 +1,6 @@
 package vocabulary.view;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +8,12 @@ import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -17,7 +21,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import vocabulary.MainApp;
 import vocabulary.data.DatabaseHandler;
 import vocabulary.model.Translation;
 import vocabulary.model.Word;
@@ -33,7 +39,7 @@ public class ViewTableController {
     @FXML
     private Button removeBtn;
     @FXML
-    private ChoiceBox<String> anotherTable;
+    private Button anotherTable;
     
     @FXML
     private TextField pField;
@@ -59,7 +65,6 @@ public class ViewTableController {
     
     @FXML
     private void initialize() {
-       
         pWordColumn.setCellValueFactory(cellData -> {
             SimpleStringProperty prop = new SimpleStringProperty();
             String word = getWord(cellData.getValue().getPid(), 'P');
@@ -104,9 +109,6 @@ public class ViewTableController {
             }
             else {
                 anotherTable.setDisable(false);
-                anotherTable.setItems(tableNames);
-                anotherTable.getSelectionModel().selectedItemProperty().
-                addListener((observable, oldValue, newValue) -> changeTable(newValue));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -206,6 +208,55 @@ public class ViewTableController {
         changesSaved = false;
     }
     
+    @FXML
+    private void handleChooseAnotherTable() {
+        try {
+            if (!changesSaved) {
+                String header = "You have unsaved changes.";
+                String message = "Would you like to save you changes now before you quit?";
+                String title = "Unsaved changes";
+                if(showConfiramtionAlert(header, message, title)) {
+                    saveChanges();
+                }
+                changesSaved = true;
+            }
+            String returnedTableName = displaySelectTable();
+            if (returnedTableName != null) {
+                tableName = returnedTableName;
+                initData();
+                tableNames = DatabaseHandler.getTableNames();
+                tableNames.remove(tableName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    private String displaySelectTable() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/SelectTable.fxml"));
+        AnchorPane page = (AnchorPane) loader.load();
+        
+        Stage selectStage = new Stage();
+        selectStage.resizableProperty().setValue(false);
+        selectStage.setTitle("Select Table");
+        selectStage.initModality(Modality.WINDOW_MODAL);
+        selectStage.initOwner(stage);
+        selectStage.getIcons().add(new Image("file:resources/images/icon.png"));
+        
+        SelectTableController controller = loader.getController();
+        controller.setStage(selectStage);
+        controller.setTableNames(tableNames);
+        Scene scene = new Scene(page);
+        selectStage.setScene(scene);
+        selectStage.showAndWait();
+        
+        return controller.getTableName();
+    }
+    
     private boolean checkTextFields() {
         String pStr = pField.getText(), fStr = fField.getText();
         if (pStr == null || pStr.isEmpty() || fStr == null || fStr.isEmpty()) {
@@ -300,29 +351,6 @@ public class ViewTableController {
             }
             changesSaved = true;
             DatabaseHandler.clearDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void changeTable(String newTable) {
-        try {
-            if (newTable != null) {
-                if (!changesSaved) {
-                    String header = "You have unsaved changes.";
-                    String message = "Would you like to save you changes now before you quit?";
-                    String title = "Unsaved changes";
-                    if(showConfiramtionAlert(header, message, title)) {
-                        saveChanges();
-                    }
-                    changesSaved = true;
-                }
-                System.out.println("new table " + newTable);
-                tableName = newTable;
-                initData();
-                tableNames = DatabaseHandler.getTableNames();
-                tableNames.remove(tableName);
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

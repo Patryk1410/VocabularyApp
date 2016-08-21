@@ -6,9 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -27,7 +24,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -40,7 +39,7 @@ import vocabulary.util.CustomString;
 public class MainWindowController {
     
     @FXML
-    private ChoiceBox<String> chooseTable;
+    private ListView<String> chooseTable;
     @FXML
     private Button editTable;
     @FXML
@@ -67,6 +66,7 @@ public class MainWindowController {
         try {
             tables = DatabaseHandler.getTableNames();
             chooseTable.setItems(tables);
+            chooseTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             chooseTable.getSelectionModel().selectedItemProperty().
                 addListener((observable, oldValue, newValue) -> updateWindowState());
         } catch (SQLException e) {

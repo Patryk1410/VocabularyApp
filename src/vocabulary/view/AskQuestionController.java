@@ -29,7 +29,7 @@ public class AskQuestionController {
     private Stage stage;
 
     private boolean allTables;
-    private boolean allWords;
+//    private boolean allWords;
     private boolean toPolish;
     private boolean learn;
     private int questionNumber;
@@ -47,7 +47,7 @@ public class AskQuestionController {
     
     public void init(boolean allTables, boolean allWords, boolean toPolish, boolean learn, String tableName, int numberOfQuestions) {
         this.allTables = allTables;
-        this.allWords = allWords;
+//        this.allWords = allWords;
         this.toPolish = toPolish;
         this.learn = learn;
         this.tableName = tableName;
