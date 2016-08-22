@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -103,7 +104,7 @@ public class MainApp extends Application {
         }
     }
     
-    public void startTest(boolean allTables, boolean allWords, boolean toPolish, boolean learn, String tableName, int numberOfWords) {
+    public void startTest(boolean allTables, boolean allWords, boolean toPolish, boolean learn, ObservableList<String> tableNames, int numberOfWords) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource("view/AskQuestion.fxml"));
         try {
@@ -119,7 +120,7 @@ public class MainApp extends Application {
             stage.setScene(scene);
             
             AskQuestionController controller = loader.getController();
-            controller.init(allTables, allWords, toPolish, learn, tableName, numberOfWords);
+            controller.init(allTables, allWords, toPolish, learn, tableNames, numberOfWords);
             controller.setStage(stage);
             
             stage.showAndWait();

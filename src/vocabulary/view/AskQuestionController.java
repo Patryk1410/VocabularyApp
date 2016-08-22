@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -41,16 +42,16 @@ public class AskQuestionController {
     private List<String> copyQuestionList;
     private Random randomGenerator;
     
-    private String tableName;
+    private ObservableList<String> tableNames;
     
     public AskQuestionController() { }
     
-    public void init(boolean allTables, boolean allWords, boolean toPolish, boolean learn, String tableName, int numberOfQuestions) {
+    public void init(boolean allTables, boolean allWords, boolean toPolish, boolean learn, ObservableList<String> tableNames, int numberOfQuestions) {
         this.allTables = allTables;
 //        this.allWords = allWords;
         this.toPolish = toPolish;
         this.learn = learn;
-        this.tableName = tableName;
+        this.tableNames = tableNames;
         questions = new TreeMap<>();
         questionList = new ArrayList<>();
         questionNumber = 1;
@@ -77,8 +78,8 @@ public class AskQuestionController {
             List<Word> pWords = null;
             List<Word> fWords = null;
             if(!allTables) {
-                pWords = DatabaseHandler.getWordListFromTable('P', tableName);
-                fWords = DatabaseHandler.getWordListFromTable('F', tableName);
+                pWords = DatabaseHandler.getWordListFromTables('P', tableNames);
+                fWords = DatabaseHandler.getWordListFromTables('F', tableNames);
             } else {
                 pWords = DatabaseHandler.getWordList('P');
                 fWords = DatabaseHandler.getWordList('F');

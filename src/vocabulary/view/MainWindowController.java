@@ -188,12 +188,12 @@ public class MainWindowController {
         boolean allWords = allWordsRdbtn.isSelected();
         boolean toPolish = toPolishRdbtn.isSelected();
         boolean learn = learnRdbtn.isSelected();
-        String tableName = allTables ? null : chooseTable.getSelectionModel().getSelectedItem();
-        if ((allTables || tableName != null) && (allWords || (!numberOfWordsField.getText().isEmpty() && checkIfNumberValid()))) { 
+        ObservableList<String> tableNames = allTables ? null : chooseTable.getSelectionModel().getSelectedItems();
+        if ((allTables || !tableNames.isEmpty()) && (allWords || (!numberOfWordsField.getText().isEmpty() && checkIfNumberValid()))) { 
             int numberOfWords = allWords ? 0 : Integer.parseInt(numberOfWordsField.getText());
-            mainApp.startTest(allTables, allWords, toPolish, learn, tableName, numberOfWords);
+            mainApp.startTest(allTables, allWords, toPolish, learn, tableNames, numberOfWords);
         } else {
-            boolean b1 = !allTables && tableName == null;
+            boolean b1 = !allTables && tableNames.isEmpty();
             boolean b2 = !allWords && numberOfWordsField.getText().isEmpty();
             boolean b3 = !allWords && !numberOfWordsField.getText().isEmpty() && !checkIfNumberValid();
             showWarningAlert(b1, b2, b3);

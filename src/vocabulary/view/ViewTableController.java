@@ -45,6 +45,8 @@ public class ViewTableController {
     private TextField pField;
     @FXML
     private TextField fField;
+    @FXML
+    private TextField searchField;
     @FXML 
     private Label tableNameLbl;
     
@@ -79,7 +81,6 @@ public class ViewTableController {
         });
         wordsTable.getSelectionModel().selectedItemProperty().
             addListener((observable, oldValue, newValue) -> updateWindow());
-            
         
     }
     
@@ -230,7 +231,35 @@ public class ViewTableController {
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void handleSearch() {
+        try {
+            String word = searchField.getText();
+            if (word.isEmpty()) {
+                String header = "No word inserted";
+                String message = "Please enter a word you want to find";
+                showCustomAlert(header, message);
+            } else {
+                List<String> tableNames = DatabaseHandler.findWord(word);
+                if (tableNames.isEmpty()) {
+                    String header = "Word not found";
+                    String message = "The word you're looking for is not in the database";
+                    showCustomAlert(header, message);
+                } else {
+                    String title = "Search results";
+                    String header = "The word you're looking for is in following tables:";
+                    String message = "";
+                    for (String s : tableNames) {
+                        message += s + '\n';
+                    }
+                    showInfoAlert(title, header, message);
+                }
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -298,6 +327,15 @@ public class ViewTableController {
         alert.setContentText(message);
         alert.showAndWait();
         return alert.getResult() == ButtonType.OK;
+    }
+    
+    private void showInfoAlert(String title, String header, String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.initOwner(stage);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
     
     private Word createWord(String lang, String tableName, String word) {

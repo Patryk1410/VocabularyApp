@@ -106,6 +106,26 @@ public class DatabaseHandler {
         return res;
     }
     
+    public static List<Word> getWordListFromTables(char language, ObservableList<String> tableNames) throws SQLException {
+        List<Word> res = FXCollections.observableArrayList();
+        Statement s = connection.createStatement();
+        String query = "select * from wordbank where lang = '" + language + "' and source in ('";
+        query += tableNames.get(0);
+        for (int i = 1; i < tableNames.size(); ++i) {
+            query += "', '" + tableNames.get(i);
+        }
+        query += "')";
+        ResultSet rs = s.executeQuery(query);
+        while(rs.next()) {
+            int id = rs.getInt(1);
+            String lang = rs.getString(2);
+            String word = rs.getString(3);
+            String source = rs.getString(4);
+            res.add(new Word(id, lang, word, source));
+        }
+        return res;
+    }
+    
     public static List<Word> getWordListFromTable(char language, String tableName) throws SQLException {
         List<Word> res = new ArrayList<Word>();
         Statement s = connection.createStatement();
@@ -292,6 +312,17 @@ public class DatabaseHandler {
         }
     }
     
+    public static List<String> findWord(String word) throws SQLException {
+        List<String> res = new ArrayList<>();
+        String query = "select source from wordbank where word = '" + word + "'";
+        Statement s = connection.createStatement();
+        ResultSet rs = s.executeQuery(query);
+        while (rs.next()) {
+            res.add(rs.getString(1));
+        }
+        return res;
+    }
+    
     public static void clearDatabase() {
         try {
             Statement s = connection.createStatement();
@@ -304,4 +335,5 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
+    
 }

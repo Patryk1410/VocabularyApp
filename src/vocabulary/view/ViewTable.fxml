@@ -26,7 +26,10 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="anotherTable" layoutX="46.0" layoutY="240.0" mnemonicParsing="false" onAction="#handleChooseAnotherTable" text="Choose another table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button fx:id="anotherTable" layoutX="46.0" layoutY="235.0" mnemonicParsing="false" onAction="#handleChooseAnotherTable" text="Choose another table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Separator layoutY="274.0" prefHeight="4.0" prefWidth="144.0" />
+                  <TextField fx:id="searchField" layoutX="-2.0" layoutY="290.0" promptText="Find a word" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutX="16.0" layoutY="328.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="25.0" prefWidth="112.0" text="Search" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
