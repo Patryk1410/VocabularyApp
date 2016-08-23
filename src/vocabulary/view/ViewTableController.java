@@ -389,6 +389,9 @@ public class ViewTableController {
             }
             changesSaved = true;
             DatabaseHandler.clearDatabase();
+            newWords.clear();
+            newTranslations.clear();
+            removedTranslations.clear();
         } catch (SQLException e) {
             e.printStackTrace();
         }
