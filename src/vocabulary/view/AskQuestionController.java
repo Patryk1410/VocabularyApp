@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -111,14 +112,13 @@ public class AskQuestionController {
         }
         if(questionNumber == numberOfQuestions && !learn) {
             showTestFinishedAlert();
-            stage.close();
         } else {
             questionNumber++;
             if (correctAnswer || !learn)  {
                 copyQuestionList.remove(questionId);
                 if (copyQuestionList.isEmpty() && learn) {
                     showTestFinishedAlert();
-                    stage.close();
+                    return;
                 }
             }
             if (copyQuestionList.isEmpty() && !learn) {
@@ -181,12 +181,32 @@ public class AskQuestionController {
     
     private void showTestFinishedAlert() {
         Alert alert = new Alert(AlertType.INFORMATION);
+        ButtonType okButton = new ButtonType("Ok", ButtonData.OK_DONE);
+        ButtonType repeatButton = new ButtonType("Repeat", ButtonData.RIGHT);
+        alert.getButtonTypes().setAll(okButton, repeatButton);
         alert.initOwner(stage);
         alert.setTitle(learn ? "Learning finished" : "Test finished");
         alert.setHeaderText(learn ? "You finished learning this table" : "The test is finished");
         int percent = score * 100 / numberOfQuestions;
         alert.setContentText(learn ? "" : "Your score is " + score + "/" + numberOfQuestions + " (" + percent + "%)");
-        alert.showAndWait();
+        alert.showAndWait().ifPresent(response -> {
+           if (response == okButton) {
+               stage.close();
+           } else {
+               repeatTest();
+           }
+        });
+    }
+    
+    private void repeatTest() {
+        copyQuestionList = new ArrayList<>(questionList);
+        if (learn) {
+            askQuestion();
+        } else {
+            score = 0;
+            questionNumber = 1;
+            askQuestion();
+        }
     }
     
     private void askQuestion() {
