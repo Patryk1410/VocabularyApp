@@ -116,12 +116,6 @@ public class ViewTableController {
         }
     }
     
-//    private int getHighestIdFromTables() {
-//        int pid = pWords.isEmpty() ? 0 : pWords.get(pWords.size() - 1).getId();
-//        int fid = fWords.isEmpty() ? 0 : fWords.get(fWords.size() - 1).getId();
-//        return pid > fid ? pid : fid;
-//    }
-    
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -263,7 +257,7 @@ public class ViewTableController {
             e.printStackTrace();
         }
     }
-    
+
     private String displaySelectTable() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(MainApp.class.getResource("view/SelectTable.fxml"));

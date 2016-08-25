@@ -323,6 +323,12 @@ public class DatabaseHandler {
         return res;
     }
     
+    public static void renameTable(String oldName, String newName) throws SQLException {
+        String query = "update wordbank set source = '" + newName + "' where source = '" + oldName + "'";
+        PreparedStatement s = connection.prepareStatement(query);
+        s.executeUpdate();
+    }
+    
     public static void clearDatabase() {
         try {
             Statement s = connection.createStatement();

@@ -20,7 +20,8 @@
          </font>
       </Label>
       <TextField fx:id="answer" layoutX="14.0" layoutY="100.0" />
-      <Button defaultButton="true" layoutX="14.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleCheck" text="Check" />
+      <Button fx:id="checkBtn" defaultButton="true" layoutX="14.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleCheck" text="Check" />
       <Separator layoutY="54.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <Label fx:id="correct" layoutX="14.0" layoutY="135.0" text="Label" />
    </children>
 </AnchorPane>

@@ -25,6 +25,7 @@ public class SelectTableController {
     
     public void setTableNames(ObservableList<String> tableNames) {
         this.tableNames = tableNames;
+        this.tableNames.sort(null);
         chooseTable.setItems(tableNames);
     }
     

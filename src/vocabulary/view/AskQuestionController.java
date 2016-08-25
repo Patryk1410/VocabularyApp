@@ -11,10 +11,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import vocabulary.data.DatabaseHandler;
 import vocabulary.model.Word;
@@ -26,7 +29,11 @@ public class AskQuestionController {
     @FXML
     private Label question;
     @FXML
+    private Label correct;
+    @FXML
     private TextField answer;
+    @FXML
+    private Button checkBtn;
     
     private Stage stage;
 
@@ -34,6 +41,7 @@ public class AskQuestionController {
 //    private boolean allWords;
     private boolean toPolish;
     private boolean learn;
+    private boolean testFinished;
     private int questionNumber;
     private int numberOfQuestions;
     private int questionId;
@@ -53,6 +61,8 @@ public class AskQuestionController {
         this.toPolish = toPolish;
         this.learn = learn;
         this.tableNames = tableNames;
+        this.correct.setVisible(false);
+        this.testFinished = false;
         questions = new TreeMap<>();
         questionList = new ArrayList<>();
         questionNumber = 1;
@@ -99,25 +109,35 @@ public class AskQuestionController {
     
     @FXML
     private void handleCheck() {
+        if (testFinished) {
+            showTestFinishedAlert();
+            return;
+        }
         boolean correctAnswer;
         String ans = answer.getText();
+        String q = copyQuestionList.get(questionId);
         if (checkAnswer(ans)) {
-            showCorrectAnswerAlert();
+            //showCorrectAnswerAlert();
+            showCorrectAnswer();
             correctAnswer = true;
             score++;
         } else {
             correctAnswer = false;
-            String q = copyQuestionList.get(questionId);
-            showWrongAnswerAlert(q);
+            showWrongAnswer(q);
+            //showWrongAnswerAlert(q);
         }
         if(questionNumber == numberOfQuestions && !learn) {
-            showTestFinishedAlert();
+            testFinished = true;
+            checkBtn.setText("Finish");
+            //showTestFinishedAlert();
         } else {
             questionNumber++;
             if (correctAnswer || !learn)  {
                 copyQuestionList.remove(questionId);
                 if (copyQuestionList.isEmpty() && learn) {
-                    showTestFinishedAlert();
+                    testFinished = true;
+                    checkBtn.setText("Finish");
+                    //showTestFinishedAlert();
                     return;
                 }
             }
@@ -169,6 +189,28 @@ public class AskQuestionController {
         alert.showAndWait();
     }
     
+    private void showCorrectAnswer() {
+        stage.setHeight(239);
+        checkBtn.setTranslateY(0);
+        correct.setVisible(true);
+        correct.setTextFill(Color.web("green"));
+    }
+    
+    private void showWrongAnswer(String q) {
+        stage.setHeight(260);
+        checkBtn.setTranslateY(30);
+        correct.setVisible(true);
+        correct.setTextFill(Color.web("red"));
+        String correctAnswer = "";
+        List<String> answers = questions.get(q);
+        for(String s : answers) {
+            correctAnswer += (s + ", ");
+        }
+        correctAnswer = correctAnswer.substring(0, correctAnswer.length()-2);
+        
+        correct.setText("Wrong answer\nCorrect answer is:\n" + correctAnswer);
+    }
+    
     private boolean showConfirmCloseAlert() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.initOwner(stage);
@@ -200,6 +242,9 @@ public class AskQuestionController {
     
     private void repeatTest() {
         copyQuestionList = new ArrayList<>(questionList);
+        checkBtn.setText("Check");
+        testFinished = false;
+        correct.setVisible(false);
         if (learn) {
             askQuestion();
         } else {

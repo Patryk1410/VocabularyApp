@@ -30,6 +30,7 @@
                               <Button layoutX="-15.0" layoutY="239.0" mnemonicParsing="false" onAction="#handleAddTable" prefHeight="25.0" prefWidth="175.0" text="Add Table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="95.0" />
                               <Button layoutX="-23.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleExportDatabase" prefHeight="25.0" prefWidth="175.0" text="Export Database" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0" />
                               <Button layoutX="-13.0" layoutY="93.0" mnemonicParsing="false" onAction="#handleImportDatabase" prefHeight="25.0" prefWidth="175.0" text="Import Databse" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+                              <Button fx:id="renameTable" disable="true" layoutX="-19.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleRenameTable" prefHeight="25.0" prefWidth="175.0" text="Rename Table" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0" />
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

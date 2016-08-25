@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -23,11 +25,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import vocabulary.MainApp;
@@ -44,6 +46,8 @@ public class MainWindowController {
     private Button editTable;
     @FXML
     private Button removeTable;
+    @FXML
+    private Button renameTable;
     @FXML
     private TextField numberOfWordsField;
     @FXML
@@ -65,6 +69,7 @@ public class MainWindowController {
     private void initialize() {
         try {
             tables = DatabaseHandler.getTableNames();
+            tables.sort(null);
             chooseTable.setItems(tables);
             chooseTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             chooseTable.getSelectionModel().selectedItemProperty().
@@ -86,9 +91,11 @@ public class MainWindowController {
         if(chooseTable.getSelectionModel().getSelectedItem() != null) {
             editTable.setDisable(false);
             removeTable.setDisable(false);
+            renameTable.setDisable(false);
         } else {
             editTable.setDisable(true);
             removeTable.setDisable(true);
+            renameTable.setDisable(true);
         }
     }
     
@@ -133,6 +140,16 @@ public class MainWindowController {
         alert.showAndWait();
     }
     
+    private String showRenameAlert(String tableName) {
+        TextInputDialog alert = new TextInputDialog(tableName);
+        alert.initOwner(stage);
+        alert.setTitle("Rename table");
+        alert.setHeaderText("Enter new name for the table " + tableName);
+        alert.setContentText(null);
+        Optional<String> res = alert.showAndWait();
+        return res.get();
+    }
+    
     private boolean checkIfNumberValid() {
         try {
             int n = Integer.parseInt(numberOfWordsField.getText());
@@ -166,6 +183,20 @@ public class MainWindowController {
                 DatabaseHandler.deleteTranslationsFromTable(tableName);
                 tables.remove(tableName);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void handleRenameTable() {
+        try {
+            String tableName = chooseTable.getSelectionModel().getSelectedItem();
+            String newTableName = showRenameAlert(tableName);
+            tables.remove(tableName);
+            tables.add(newTableName);
+            tables.sort(null);
+            DatabaseHandler.renameTable(tableName, newTableName);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -305,4 +336,6 @@ public class MainWindowController {
             e.printStackTrace();
         }  
     }
+    
+    
 }
