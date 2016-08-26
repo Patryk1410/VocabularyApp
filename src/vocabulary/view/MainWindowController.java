@@ -1,5 +1,6 @@
 package vocabulary.view;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -251,29 +252,12 @@ public class MainWindowController {
     
     @FXML
     private void handlePatchNotes() {
-        String msg = "";
-        String title = "Patch Notes";
-        String header = "Patch Notes";
-        File directory = new File("resources/patch_notes");
-        for (File f : directory.listFiles())
-        {
-            String s = f.getAbsolutePath();
-            try (BufferedReader br = new BufferedReader(new FileReader(s))) {
-                String line = "";
-                while ((line = br.readLine()) != null) {
-                    msg += line + '\n';
-                }
-                msg += '\n';
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                break;
-            } catch (IOException e) {
-                e.printStackTrace();
-                break;
-            }
-            s += '\n';
+        try {
+            File htmlFile = new File("resources/patch_notes/patch_notes.html");
+            Desktop.getDesktop().browse(htmlFile.toURI());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        showInformationAlert(msg, title, header);
     }
     
     @FXML

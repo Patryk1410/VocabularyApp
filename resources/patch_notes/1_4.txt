@@ -1,6 +1,0 @@
-patch 1.4
-19.08.2016
-
-- All the signs required for french vocabulary can now be properly inserted
-- You can now insert different forms of the same word in one entry if you separate them with commas
-- 'Learning mode' added

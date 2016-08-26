@@ -1,6 +1,0 @@
-patch 1.5
-22.08.2016
-
-- The tables are now chosen from list instead of drop down list
-- You can now test yourself from more than one table at a time
-- You can now find a table containing a specific word

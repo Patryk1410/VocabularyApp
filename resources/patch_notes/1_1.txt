@@ -1,7 +1,0 @@
-patch 1.1 
-15.07.2016
-
-- 'About', and 'Patch notes' buttons added
-- Slight design changes
-- App now creates 'Basics' table when it is first started
-- readMe file, describing how application works is added
