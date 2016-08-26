@@ -25,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
@@ -102,6 +103,9 @@ public class MainWindowController {
     
     private boolean showConfiramtionAlert(String tableName) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
+        ButtonType yesButtonType = new ButtonType("Yes", ButtonData.OK_DONE);
+        ButtonType noButtonType = new ButtonType("No", ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(yesButtonType, noButtonType);
         alert.initOwner(stage);
         alert.setTitle("Remove table");
         alert.setHeaderText("Are you sure you want to remove table " + tableName + "?");
@@ -321,5 +325,14 @@ public class MainWindowController {
         }  
     }
     
+    @FXML
+    private void handleHelp() {
+        try {
+            File htmlFile = new File("resources/manual.html");
+            Desktop.getDesktop().browse(htmlFile.toURI());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
 }

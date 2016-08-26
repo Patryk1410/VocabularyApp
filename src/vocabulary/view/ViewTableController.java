@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -140,8 +141,11 @@ public class ViewTableController {
             String header = "You have unsaved changes.";
             String message = "Would you like to save you changes now before you quit?";
             String title = "Unsaved changes";
-            if(showConfiramtionAlert(header, message, title)) {
+            int res = showConfiramtionAlert(header, message, title);
+            if(res == 1) {
                 saveChanges();
+            } else if (res == 3) {
+                return;
             }
             changesSaved = true;
         }
@@ -210,8 +214,11 @@ public class ViewTableController {
                 String header = "You have unsaved changes.";
                 String message = "Would you like to save you changes now before you quit?";
                 String title = "Unsaved changes";
-                if(showConfiramtionAlert(header, message, title)) {
+                int res = showConfiramtionAlert(header, message, title);
+                if(res == 1) {
                     saveChanges();
+                } else if (res == 3) {
+                    return;
                 }
                 changesSaved = true;
             }
@@ -313,14 +320,24 @@ public class ViewTableController {
         alert.showAndWait();
     }
     
-    private boolean showConfiramtionAlert(String header, String message, String title) {
+    private int showConfiramtionAlert(String header, String message, String title) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
+        ButtonType yesButtonType = new ButtonType("Yes", ButtonData.OK_DONE);
+        ButtonType noButtonType = new ButtonType("No");
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(yesButtonType, noButtonType, cancelButtonType);
         alert.initOwner(stage);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(message);
         alert.showAndWait();
-        return alert.getResult() == ButtonType.OK;
+        if (alert.getResult() == yesButtonType) {
+            return 1;
+        } else if (alert.getResult() == noButtonType) {
+            return 2;
+        } else {
+            return 3;
+        }
     }
     
     private void showInfoAlert(String title, String header, String message) {

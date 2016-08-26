@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Welcome to TranslatationApp manual!</h1>
+
+<p>This application was created to support learning new language.<br> 
+You can store new vocabulary in tables and then test yourself on how good you remember<br>
+With this manual you will learn everything about the functions it provides.</p>
+
+<h2>The Main window</h2>
+<img src="images/main_menu_manual.jpg" alt="main menu image" style="width:700px;height:450px;">
+<p>This is the first window you will see when you start the application.</p>
+<h4>1 - Export Database button</h4>
+<p>This button allows you to save everything you have added so far as an xml file. <br>
+This file can be later used to restore your data.</p>
+<h4>2 - Import Database button</h4>
+<p>This button allows you to restore your words from the xml file. <br>
+Only xml files with the same structure as the ones created by Export Database button can be used</p>
+<h4>3 - List of Tables</h4>
+<p>This is list of tables that you have created so far. <br>
+When you start the application for the first time it will have an example table called 'Basic'.<br>
+It contains some basic polish and french vocabulary. Feel free to delete it.<br>
+When there is more than one table, you can choose a couple at once and test yourself from them all.<br>
+To do so, hold ctrl button while selecting tables. You can also hold shift button to select a range of tables.<br>
+Keep in mind that buttons 5-7 will work only when you have exactly one table selected. </p>
+<h4>4 - Add Table button</h4>
+<p>This button opens the allows you to create new tables.<br>
+<b>All empty tables will be deleted upon exiting application.</b></p>
+<h4>5 - Edit Table button</h4>
+<p>This button opens the Table View window. <br>
+There you can add and remove vocabulary from a selected table.<br>
+This button will activate itself only when exactly one table from List of Tables is selected.</p>
+<h4>6 - Remove Table button</h4>
+<p>This button removes selected table and its entire content. <br>
+<b>Unless you exported your database earlier this operation cannot be undone.</b><br>
+This button will activate itself only when exactly one table from List of Tables is selected.</p>
+<h4>7 - Rename Table button</h4>
+<p>This button allows you to change name of a table. <br>
+This button will activate itself only when exactly one table from List of Tables is selected.</p>
+<h4>8 - Help button</h4>
+<p>This button opens this manual. </p>
+<h4>9 - About button</h4>
+<p>This button displays basic informations about the application. </p>
+<h4>10 - Patch Notes button</h4>
+<p>This button displays informations about things that were added in each version of the application.</p>
+<h4>11 - Questions range selection</h4>
+<p>These radiobuttons allow you to select the range of questions.<br>
+If you select the upper one the test will only contain vocabulary from the tables you've chosen form List of Tables.<br>
+Keep in mind that if you choose this option and don't select any table an error alert will be displayed.<br>
+If you select the lower onw the test will contain everything you've added so far.</p>
+<h4>12 - Number of questions selection</h4>
+<p>These radiobuttons allow you to select the number of questions.<br>
+If you select the upper one the test will contain every word from selected range.<br>
+If you select the lower one the test will contain number of questions you type into the textbox.<br>
+Keep in mind that if you choose this option and don't type anything into the textbox or enter something that is not a positive integer an error alert will be displayed.<br></p>
+<h4>13 - Language selection</h4>
+<p>These radiobuttons allow you to select the language of questions.<br>
+If you select the upper one you will have to translate to the language you know.<br>
+If you select the lower onw you will have to translate to the language you're learning.</p>
+<h4>14 - Mode selection</h4>
+<p>These radiobuttons allow you to select whether you want to learn a table or test yourself from its content.<br>
+In learning mode(upper one) questions are not removed from the list untill you answer them correctly.<br>
+In test mode(lower one) each question will be asked only once and at the end of test your score will be displayed.</p>
+<h4>15 - Start button</h4>
+<p>Press this button to start test.<br>
+<b>This button is pressed automatically if you press enter in this window.</b></p>
+
+<h2>The Table View window</h2>
+<img src="images/table_view_manual.jpg" alt="table view image" style="width:600px;height:400px;">
+<p>You will enter this window after you press Edit Table button in Main window</p>
+<h4>1 - Table Name</h4>
+<p>This is name of the table you're editting.</p>
+<h4>2 - First Language textbox</h4>
+<p>When adding new words you will type the word in the language you know into this textbox.</p>
+<h4>3 - Second Language textbox</h4>
+<p>When adding new words you will type the word in the language you're learning into this textbox.</p>
+<h4>4 - Add button</h4>
+<p>This button will use the contents of textboxes 2 and 3 to create a new entry.<br>
+You can only use letters, apostrophes('), dashes(-) and question marks(?) in the textboxes.<br>
+All letters will be changed to lowercase and all leading and trailing white-spaces will be removed.<br>
+You can insert commas into textboxes to put more than one word into one entry.<br>
+This is useful when a word in one language can be translated to a couple of different words in another.<br>
+For example, french word 'il' can be translated as either 'he' or 'it'.<br>
+So someone who knows english and learns french should fill textbox in a following manner:<br>
+First Language(english in this case) textbox: he, it<br>
+Second Language(french) textbox: il<br>
+When later during testing you're asked for the meaning of word 'il', typing eiher 'he' or 'it' will give you correct answer.<br>
+<b>This button will be pressed automatically when you press enter button in this window.</b></p>
+<h4>5 - Remove button</h4>
+<p>This button removes entry.</p>
+<h4>6 - Choose Another Table button</h4>
+<p>This button will change the table you're editing.<br>
+<b>Be careful, all unsaved changes will be lost.</b></p>
+<h4>7 - Find a Word textbox</h4>
+<p>If you want to check whether you have already added a particular word, type it into this textfield and press the button below.</p>
+<h4>8 - Search button</h4>
+<p>Press this button to check whether you have already added a word that is in the Find a Word textfield.</p>
+<h4>9 - First list of words</h4>
+<p>This is list of words of the language you know.</p>
+<h4>10 - Second list of words</h4>
+<p>This is list of translations of words from list 9.</p>
+<h4>11 - Ok button</h4>
+<p>This button saves all changes and returns to Main window.</p>
+<h4>12 - Cancel button</h4>
+<p>This button dicards all changes and returns to Main window.</p>
+<h4>13 - Apply button</h4>
+<p>This button saves all changes.</p>
+</body>
+
+</html>
