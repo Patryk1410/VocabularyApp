@@ -292,7 +292,7 @@ public class ViewTableController {
         if (pStr == null || pStr.isEmpty() || fStr == null || fStr.isEmpty()) {
             return false;
         }
-        String regex = "[^,][^0-9~!@#$%^&*()_=+\\[{}\\]|\\\\;:<>/]+[^,]";
+        String regex = "[^,]?[^0-9~!@#$%^&*()_=+\\[{}\\]|\\\\;:<>/]+[^,]?";
         if(pStr.matches(regex) && fStr.matches(regex)) {
             return true;
         } else {

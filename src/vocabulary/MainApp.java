@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vocabulary.data.DatabaseHandler;
+import vocabulary.data.StringsHolder;
 import vocabulary.util.CustomString;
 import vocabulary.view.AskQuestionController;
 import vocabulary.view.MainWindowController;
@@ -25,8 +26,9 @@ public class MainApp extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+        StringsHolder.init();
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Vocabulary Test");
+        this.primaryStage.setTitle("VocabularyApp " + StringsHolder.version);
         this.primaryStage.setOnCloseRequest(event -> {
             DatabaseHandler.clearDatabase();
         });

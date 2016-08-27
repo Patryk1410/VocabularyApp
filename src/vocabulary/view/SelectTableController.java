@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import vocabulary.util.StringComparator;
 
 public class SelectTableController {
     
@@ -25,7 +26,7 @@ public class SelectTableController {
     
     public void setTableNames(ObservableList<String> tableNames) {
         this.tableNames = tableNames;
-        this.tableNames.sort(null);
+        this.tableNames.sort(new StringComparator());
         chooseTable.setItems(tableNames);
     }
     

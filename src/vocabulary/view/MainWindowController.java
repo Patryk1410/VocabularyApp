@@ -39,6 +39,7 @@ import vocabulary.data.DatabaseHandler;
 import vocabulary.data.XMLHandler;
 import vocabulary.util.CustomException;
 import vocabulary.util.CustomString;
+import vocabulary.util.StringComparator;
 
 public class MainWindowController {
     
@@ -71,7 +72,7 @@ public class MainWindowController {
     private void initialize() {
         try {
             tables = DatabaseHandler.getTableNames();
-            tables.sort(null);
+            tables.sort(new StringComparator());
             chooseTable.setItems(tables);
             chooseTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             chooseTable.getSelectionModel().selectedItemProperty().
@@ -309,6 +310,7 @@ public class MainWindowController {
             XMLHandler.importDatabase(file);
             
             tables = DatabaseHandler.getTableNames();
+            tables.sort(new StringComparator());
             chooseTable.setItems(tables);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();

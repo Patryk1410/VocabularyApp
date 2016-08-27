@@ -1,0 +1,3 @@
+polish
+french
+v1.7
