@@ -17,7 +17,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import vocabulary.data.DatabaseHandler;
 import vocabulary.model.Word;
@@ -165,35 +164,12 @@ public class AskQuestionController {
         return processedAnswers.contains(ans);
     }
     
-    private void showCorrectAnswerAlert() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.initOwner(stage);
-        alert.setTitle("Correct Answer");
-        alert.setHeaderText("Correct Answer!");
-        alert.setContentText("Your answer is correct");
-        alert.showAndWait();
-    }
-    
-    private void showWrongAnswerAlert(String q) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.initOwner(stage);
-        alert.setTitle("Wrong Answer");
-        alert.setHeaderText("Wrong Answer!");
-        String correctAnswer = "";
-        List<String> answers = questions.get(q);
-        for(String s : answers) {
-            correctAnswer += (s + ", ");
-        }
-        correctAnswer = correctAnswer.substring(0, correctAnswer.length()-2);
-        alert.setContentText("Correct answer is: \n" + correctAnswer);
-        alert.showAndWait();
-    }
-    
     private void showCorrectAnswer() {
         stage.setHeight(239);
         checkBtn.setTranslateY(0);
         correct.setVisible(true);
         correct.setTextFill(Color.web("green"));
+        correct.setText("Correct answer");
     }
     
     private void showWrongAnswer(String q) {

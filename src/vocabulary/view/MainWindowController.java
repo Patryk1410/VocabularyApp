@@ -36,6 +36,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import vocabulary.MainApp;
 import vocabulary.data.DatabaseHandler;
+import vocabulary.data.StringsHolder;
 import vocabulary.data.XMLHandler;
 import vocabulary.util.CustomException;
 import vocabulary.util.CustomString;
@@ -60,6 +61,8 @@ public class MainWindowController {
     @FXML
     private RadioButton toPolishRdbtn;
     @FXML
+    private RadioButton toFrenchRdbtn;
+    @FXML
     private RadioButton learnRdbtn;
     
     private MainApp mainApp;
@@ -77,6 +80,8 @@ public class MainWindowController {
             chooseTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             chooseTable.getSelectionModel().selectedItemProperty().
                 addListener((observable, oldValue, newValue) -> updateWindowState());
+            toPolishRdbtn.setText("Translate to " + StringsHolder.fLanguage.toLowerCase());
+            toFrenchRdbtn.setText("Translate to " + StringsHolder.sLanguage.toLowerCase());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,7 +96,7 @@ public class MainWindowController {
     }
     
     private void updateWindowState() {
-        if(chooseTable.getSelectionModel().getSelectedItem() != null) {
+        if(chooseTable.getSelectionModel().getSelectedItems().size() == 1) {
             editTable.setDisable(false);
             removeTable.setDisable(false);
             renameTable.setDisable(false);

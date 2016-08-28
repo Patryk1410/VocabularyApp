@@ -1,14 +1,24 @@
 package vocabulary;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Locale;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vocabulary.data.DatabaseHandler;
@@ -27,12 +37,16 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         StringsHolder.init();
+        if (StringsHolder.fLanguage.equals("none") && StringsHolder.sLanguage.equals("none")) {
+            setUpLanguages();
+        }
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("VocabularyApp " + StringsHolder.version);
         this.primaryStage.setOnCloseRequest(event -> {
             DatabaseHandler.clearDatabase();
+            saveAppData();
         });
-        this.primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
+        this.primaryStage.getIcons().add(new Image("file:resources/images/icon2.png"));
         showMainWindow();
     }
     
@@ -73,7 +87,7 @@ public class MainApp extends Application {
             dialogStage.setTitle("New Table");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
-            dialogStage.getIcons().add(new Image("file:resources/images/icon.png"));
+            dialogStage.getIcons().add(new Image("file:resources/images/icon2.png"));
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             
@@ -116,7 +130,7 @@ public class MainApp extends Application {
             stage.setTitle("Test");
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(primaryStage);
-            stage.getIcons().add(new Image("file:resources/images/icon.png"));
+            stage.getIcons().add(new Image("file:resources/images/icon2.png"));
             
             Scene scene = new Scene(page);
             stage.setScene(scene);
@@ -126,6 +140,55 @@ public class MainApp extends Application {
             controller.setStage(stage);
             
             stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void setUpLanguages() {
+        ObservableList<String> languages = FXCollections.observableArrayList();
+        String[] isoLanguages = Locale.getISOLanguages();
+        for (String s : isoLanguages) {
+            Locale loc = new Locale(s, "");
+            languages.add(loc.getDisplayLanguage(Locale.ENGLISH));
+        }
+        languages.sort(null);
+        
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Set up language");
+        alert.setHeaderText("Choose a language you speak");
+            
+        ListView<String> languageListView = new ListView<>();
+        languageListView.setItems(languages);
+        languageListView.setMaxHeight(Double.MAX_VALUE);
+        languageListView.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setVgrow(languageListView, Priority.ALWAYS);
+        GridPane.setHgrow(languageListView, Priority.ALWAYS);
+        
+        GridPane content = new GridPane();
+        content.setMaxWidth(Double.MAX_VALUE);
+        content.add(languageListView, 0, 0);
+        
+        alert.getDialogPane().setContent(content);
+        
+        alert.showAndWait();
+        StringsHolder.fLanguage = languageListView.getSelectionModel().getSelectedItem();
+        
+        alert.setHeaderText("Choose language you want to learn");
+        
+        alert.showAndWait();
+        StringsHolder.sLanguage = languageListView.getSelectionModel().getSelectedItem();
+    }
+    
+    private void saveAppData() {
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter("resources/app_data.txt"))) {
+            bw.write(StringsHolder.fLanguage);
+            bw.newLine();
+            bw.write(StringsHolder.sLanguage);
+            bw.newLine();
+            bw.write(StringsHolder.version);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

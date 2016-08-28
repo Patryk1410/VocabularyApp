@@ -81,7 +81,7 @@
                                     <ToggleGroup fx:id="radioGroup3" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton layoutX="14.0" layoutY="262.0" mnemonicParsing="false" text="Translate to french" toggleGroup="$radioGroup3" />
+                              <RadioButton fx:id="toFrenchRdbtn" layoutX="14.0" layoutY="262.0" mnemonicParsing="false" text="Translate to french" toggleGroup="$radioGroup3" />
                               <Separator layoutX="25.0" layoutY="295.0" prefHeight="3.0" prefWidth="555.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                               <RadioButton fx:id="learnRdbtn" layoutX="14.0" layoutY="316.0" mnemonicParsing="false" selected="true" text="Learn a table">
                                  <toggleGroup>

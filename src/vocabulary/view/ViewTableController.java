@@ -17,7 +17,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,6 +25,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vocabulary.MainApp;
 import vocabulary.data.DatabaseHandler;
+import vocabulary.data.StringsHolder;
 import vocabulary.model.Translation;
 import vocabulary.model.Word;
 
@@ -112,6 +112,10 @@ public class ViewTableController {
             else {
                 anotherTable.setDisable(false);
             }
+            pWordColumn.setText(StringsHolder.fLanguage);
+            fWordColumn.setText(StringsHolder.sLanguage);
+            pField.setPromptText(StringsHolder.fLanguage + " word");
+            fField.setPromptText(StringsHolder.sLanguage + " word");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -275,7 +279,7 @@ public class ViewTableController {
         selectStage.setTitle("Select Table");
         selectStage.initModality(Modality.WINDOW_MODAL);
         selectStage.initOwner(stage);
-        selectStage.getIcons().add(new Image("file:resources/images/icon.png"));
+        selectStage.getIcons().add(new Image("file:resources/images/icon2.png"));
         
         SelectTableController controller = loader.getController();
         controller.setStage(selectStage);
